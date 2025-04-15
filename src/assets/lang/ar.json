@@ -71,5 +71,54 @@
     "bills": "الفواتير",
     "notifications": "الإشعارات"
   },
-  "welcome": "مرحباً"
+  "welcome": "مرحبًا",
+  "day": "يوم",
+  "days": "أيام",
+  "hour": "ساعة",
+  "hours": "ساعات",
+  "minute": "دقيقة",
+  "minutes": "دقائق",
+  "second": "ثانية",
+  "seconds": "ثواني",
+  "loading": "جارٍ التحميل...",
+  "error": "خطأ",
+  "success": "نجاح",
+  "warning": "تحذير",
+  "details": "التفاصيل",
+  "home": {
+    "title": "لوحة التحكم",
+    "welcome": {
+      "title": "مرحبًا بك",
+      "description": "نحن سعداء بوجودك هنا! إليك نظرة سريعة على حالة الاستضافة الخاصة بك.",
+      "dateEnd": "تاريخ الانتهاء",
+      "remainingDays": "الأيام المتبقية",
+      "renewal": "التجديد"
+    },
+    "services_and_products": "الخدمات والمنتجات",
+    "domains": "النطاقات",
+    "bills": "الفواتير"
+  },
+  "products": {
+    "title": "المنتجات",
+    "description": "إدارة المنتجات والخدمات الخاصة بك.",
+    "add_product": "إضافة منتج",
+    "edit_product": "تعديل المنتج",
+    "delete_product": "حذف المنتج",
+    "product_name": "اسم المنتج",
+    "product_price": "سعر المنتج",
+    "product_description": "وصف المنتج",
+    "product_image": "صورة المنتج",
+    "product_category": "فئة المنتج",
+    "product_status": "حالة المنتج",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "table": {
+      "renewal": "التجديد",
+      "promotion": "ترقية",
+      "hosting": "الاستضافة",
+      "period": "الفترة",
+      "expiration_date": "تاريخ الانتهاء",
+      "movements": "التحركات"
+    }
+  }
 }

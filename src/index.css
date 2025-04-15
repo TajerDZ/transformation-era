@@ -161,3 +161,26 @@
 .bg-button{
   background: linear-gradient(90deg, #3A73AA 0%, #4F9D9E 100%);
 }
+
+/* .bg-banner{
+  background: linear-gradient(269.75deg, #BAEFF4 0.2%, #CFD9EF 99.81%);
+} */
+
+/* i want in rtl make .bg-banner background:black */
+
+[dir="rtl"] .bg-banner {
+  background: linear-gradient(269.75deg, #BAEFF4 0.2%, #CFD9EF 99.81%);
+}
+[dir="ltr"] .bg-banner {
+  background: linear-gradient(-269.75deg, #BAEFF4 0.2%, #CFD9EF 99.81%);
+
+  /* background: linear-gradient(90deg, #BAEFF4 0.2%, #CFD9EF 99.81%); */
+}
+
+[dir="rtl"] .bg-card-1{
+  background: linear-gradient(66.36deg, #547ACE -67.82%, #5EEFD6 97.03%);
+}
+
+[dir="ltr"] .bg-card-1{
+  background: linear-gradient(-66.36deg, #547ACE -67.82%, #5EEFD6 97.03%); 
+}

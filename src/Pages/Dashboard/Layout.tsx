@@ -54,7 +54,7 @@ function Layout() {
           <div className="flex-1 flex flex-col min-h-screen bg-background">
             <Header />
             <div
-              className="p-4 bg-background-1 overflow-y-auto"
+              className="p-10 max-md:p-4 max-md:pt-10 bg-background-1 overflow-y-auto"
               style={{ minHeight: "calc(100vh - 4.5rem)" }}
             >
               <Outlet />

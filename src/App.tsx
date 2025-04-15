@@ -9,6 +9,7 @@ import SingUp from "./Pages/Auth/SingUp";
 import ForgetPassword from "./Pages/Auth/ForgetPassword";
 import Layout from "./Pages/Dashboard/Layout";
 import Home from "./Pages/Dashboard/Home";
+import Products from "./Pages/Dashboard/Products";
 const cookies = new Cookies(null, { path: "/" });
 function App() {
   const { i18n } = useTranslation();
@@ -36,7 +37,7 @@ function App() {
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/dashboard" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="products" element={<div>Products</div>} />
+          <Route path="products" element={<Products />} />
           <Route path="store" element={<div>Store</div>} />
           <Route path="bills" element={<div>Bills</div>} />
           <Route path="*" element={<div>Not Found</div>} />
