@@ -85,6 +85,7 @@
   "success": "نجاح",
   "warning": "تحذير",
   "details": "التفاصيل",
+  "status": "الحالة",
   "home": {
     "title": "لوحة التحكم",
     "welcome": {
@@ -116,9 +117,45 @@
       "renewal": "التجديد",
       "promotion": "ترقية",
       "hosting": "الاستضافة",
+      "hosting_plan": "خطة الاستضافة",
+      "domains": "النطاقات",
+      "domain_name": "اسم النطاق",
       "period": "الفترة",
       "expiration_date": "تاريخ الانتهاء",
-      "movements": "التحركات"
+      "movements": "التحركات",
+      "products&services": "المنتجات والخدمات",
+      "product/service": "المنتج/الخدمة",
+      "price": "السعر",
+      "renewal_date": "تاريخ التجديد",
+      "dashboard": "لوحة التحكم"
+    },
+    "dialog": {
+      "renewal": {
+        "title": "تجديد اشتراك الاستضافة",
+        "description": "راجع الفاتورة المحددة وتابع عملية الدفع.",
+        "save": "حفظ التغييرات",
+        "cancel": "إلغاء",
+        "subscription_number": "رقم الاشتراك",
+        "service": "الخدمة",
+        "code_lable": "هل لديك رمز خصم؟",
+        "expiration_date": "تاريخ الانتهاء",
+        "subtotal": "المجموع الجزئي",
+        "discount": "الخصم",
+        "total": "الإجمالي",
+        "tax": "الضريبة المضافة (15%)"
+      }
     }
+  },
+  "status_item": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "suspended": "معلق",
+    "stopped": "موقفة",
+    "pending": "قيد الانتظار",
+    "canceled": "ملغي",
+    "expired": "منتهي",
+    "completed": "مكتمل",
+    "processing": "قيد المعالجة",
+    "failed": "فشل"
   }
 }

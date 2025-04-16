@@ -74,7 +74,7 @@ function SideBar() {
   const { open, setOpen } = context;
   return (
     <div
-      className="relative"
+      className="relative bg-background"
       style={{
         boxShadow:
           i18n.language == "ar"

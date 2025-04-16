@@ -85,6 +85,7 @@
   "success": "Success",
   "warning": "Warning",
   "details": "Details",
+  "status": "Status",
 
   "home": {
     "title": "home",
@@ -116,9 +117,45 @@
       "renewal": "Renewal",
       "promotion": "Promotion",
       "hosting": "Hosting",
+      "hosting_plan": "Hosting Plan",
+      "domains": "Domains",
+      "domain_name": "Domain Name",
       "period": "Period",
       "expiration_date": "Expiration Date",
-      "movements": "Movements"
+      "movements": "Movements",
+      "products&services": "Products and Services",
+      "product/service": "Product/Service",
+      "price": "Price",
+      "renewal_date": "Renewal Date",
+      "dashboard": "Dashboard"
+    },
+    "dialog": {
+      "renewal": {
+        "title": "Renew your hosting subscription",
+        "description": "Review your selected invoice and proceed to payment.",
+        "save": "Save changes",
+        "cancel": "Cancel",
+        "subscription_number": "Subscription number",
+        "service": "Service",
+        "code_lable": "Do you have a discount code?",
+        "expiration_date": "Expiration Date",
+        "subtotal": "Subtotal",
+        "discount": "Discount",
+        "total": "Total",
+        "tax": "Value Added Tax (15%)"
+      }
     }
+  },
+  "status_item": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "suspended": "Suspended",
+    "stopped": "Stopped",
+    "pending": "Pending",
+    "canceled": "Canceled",
+    "expired": "Expired",
+    "completed": "Completed",
+    "processing": "Processing",
+    "failed": "Failed"
   }
 }

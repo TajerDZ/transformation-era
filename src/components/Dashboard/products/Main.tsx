@@ -2,6 +2,8 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { t } from "i18next";
 import Database from "@/assets/icons/database.png";
+import Domains from "@/assets/icons/domains.png";
+import LandingPag from "@/assets/icons/landing-page.png";
 import {
   Table,
   TableBody,
@@ -11,8 +13,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Icon from "@/components/ui/Icon";
+import { useContext, useState } from "react";
+import { SideBarContext } from "@/hooks/SideBarContext";
+import { cn } from "@/lib/utils";
+import RenewalDialog from "./hosting/RenewalDialog";
 
 function Main() {
+  const [isOpenRenewal, setIsOpenRenewal] = useState(false);
+  const context = useContext(SideBarContext);
+  if (!context) {
+    throw new Error("useSideBarContext must be used within a SideBarProvider");
+  }
+  const { open } = context;
   return (
     <div className="space-y-5">
       <div className="space-y-3">
@@ -22,13 +36,28 @@ function Main() {
           <li className="text-gray-500">-</li>
           <li className="text-gray-500">{t("products.title")}</li>
         </ul>
-        <Separator className="" />
+        <Separator
+          className={cn(open && "max-lg:!w-[100%]")}
+          style={{
+            width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
+          }}
+        />
       </div>
-      <Card className="shadow-none rounded-lg p-0 max-md:p-0">
+      <Card
+        className={cn(
+          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300",
+          open && "max-lg:!w-[100%]"
+        )}
+        style={{
+          boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
+          overflowX: "auto",
+          width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
+        }}
+      >
         <div>
           <div className="flex items-center gap-4 p-4">
             <img src={Database} alt="" />
-            <h1>{t("products.title")}</h1>
+            <h1>{t("products.table.hosting_plan")}</h1>
           </div>
           <Table className="border border-x-0 border-b-0">
             <TableHeader className="border-b divide-x-1 ">
@@ -58,6 +87,67 @@ function Main() {
                 </TableCell>
                 <TableCell className="text-center text-secondary-1 font-medium">
                   <div className="flex items-center justify-center gap-2">
+                    <Button
+                      className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
+                      onClick={() => setIsOpenRenewal(true)}
+                    >
+                      {t("products.table.renewal")}
+                    </Button>
+                    <Button className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1">
+                      {t("products.table.promotion")}
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+      </Card>
+
+      <Card
+        className={cn(
+          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300",
+          open && "max-lg:!w-[100%]"
+        )}
+        style={{
+          boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
+          overflowX: "auto",
+          width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
+        }}
+      >
+        <div>
+          <div className="flex items-center gap-4 p-4">
+            <img src={Domains} alt="" />
+            <h1>{t("products.table.domains")}</h1>
+          </div>
+          <Table className="border border-x-0 border-b-0">
+            <TableHeader className="border-b divide-x-1 ">
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.domain_name")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.period")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.expiration_date")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
+                {t("details")}
+              </TableHead>
+            </TableHeader>
+            <TableBody>
+              <TableRow className="divide-x-1">
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  Plus Hosting
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  12 شهر
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  01-04-2025
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  <div className="flex items-center justify-center gap-2">
                     <Button className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5">
                       {t("products.table.renewal")}
                     </Button>
@@ -71,6 +161,132 @@ function Main() {
           </Table>
         </div>
       </Card>
+
+      <Card
+        className={cn(
+          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300",
+          open && "max-lg:!w-[100%]"
+        )}
+        style={{
+          boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
+          width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
+          overflowX: "auto",
+        }}
+      >
+        <div>
+          <div className="flex items-center gap-4 p-4">
+            <img src={LandingPag} alt="" />
+            <h1>{t("products.table.products&services")}</h1>
+          </div>
+          <Table className="border border-x-0 border-b-0">
+            <TableHeader className="border-b  ">
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.product/service")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.price")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.renewal_date")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
+                {t("status")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center"></TableHead>
+            </TableHeader>
+            <TableBody>
+              <TableRow className="">
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  notchpal.com
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  <div className="flex flex-col items-center justify-center">
+                    <span className=" font-medium">$208.80</span>
+                    <span className=" font-medium">ثلاث سنوات</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  الأربعاء, ديسمبر 15th, 2027
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  <Badge className="text-secondary-5 bg-secondary-5/10">
+                    {t("status_item.active")}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  <Button
+                    variant="outline"
+                    className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
+                  >
+                    <Icon name="LayoutGrid" size={16} />
+                    {t("products.table.dashboard")}
+                  </Button>
+                </TableCell>
+              </TableRow>
+              <TableRow className="">
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  notchpal.com
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  <div className="flex flex-col items-center justify-center">
+                    <span className=" font-medium">$208.80</span>
+                    <span className=" font-medium">ثلاث سنوات</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  الأربعاء, ديسمبر 15th, 2027
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  <Badge className="text-secondary-5 bg-secondary-5/10">
+                    {t("status_item.active")}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  <Button
+                    variant="outline"
+                    className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
+                  >
+                    <Icon name="LayoutGrid" size={16} />
+                    {t("products.table.dashboard")}
+                  </Button>
+                </TableCell>
+              </TableRow>
+              <TableRow className="">
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  notchpal.com
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  <div className="flex flex-col items-center justify-center">
+                    <span className=" font-medium">$208.80</span>
+                    <span className=" font-medium">ثلاث سنوات</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  الأربعاء, ديسمبر 15th, 2027
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  <Badge className="text-gray-400 bg-gray-400/10">
+                    {t("status_item.stopped")}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-center text-secondary-1 font-medium">
+                  <Button
+                    variant="outline"
+                    className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
+                  >
+                    <Icon name="LayoutGrid" size={16} />
+                    {t("products.table.dashboard")}
+                  </Button>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+      </Card>
+
+      {isOpenRenewal && (
+        <RenewalDialog isOpen={isOpenRenewal} onOpen={setIsOpenRenewal} />
+      )}
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { SideBarContext } from "@/hooks/SideBarContext";
 import Header from "@/components/Dashboard/header/Header";
 import SideBar from "@/components/Dashboard/sidebar/SideBar";
+import { cn } from "@/lib/utils";
 // import { toast } from "@/hooks/use-toast";
 // import { t } from "i18next";
 
@@ -49,15 +50,35 @@ function Layout() {
   return (
     <SideBarContext.Provider value={{ open, setOpen }}>
       <div>
-        <div className="flex">
-          <SideBar />
-          <div className="flex-1 flex flex-col min-h-screen bg-background">
-            <Header />
+        <div className="">
+          <Header />
+          <div className="flex overflow-x-auto ">
             <div
-              className="p-10 max-md:p-4 max-md:pt-10 bg-background-1 overflow-y-auto"
-              style={{ minHeight: "calc(100vh - 4.5rem)" }}
+              className={cn(
+                "z-10 fixed bottom-0 top-0 transition-all duration-300  h-screen"
+              )}
             >
+              <SideBar />
+            </div>
+            <div
+              className={cn(
+                "mt-[6rem]",
+                " ms-[4.5rem]  flex-1 relative px-5 transition-all duration-300",
+                open ? "lg:ms-64" : "ms-24"
+              )}
+              style={{
+                minHeight: "calc(100vh - 6rem)",
+              }}
+            >
+              <div
+                className={cn(
+                  "bottom-0 top-0 left-0 right-0 bg-background/60 z-[9]",
+                  open ? "max-lg:fixed" : "hidden"
+                )}
+                onClick={() => setOpen(false)}
+              />
               <Outlet />
+              {/* <Toaster /> */}
             </div>
           </div>
         </div>

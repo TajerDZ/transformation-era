@@ -26,6 +26,7 @@
     --color-secondary-5: var(--secondary-5);
     --color-secondary-6: var(--secondary-6);
     --color-background-1:hsla(210, 100%, 99%, 1);
+    --spacing-custom: var(--width-custom)
     /* ... */
   }
 
@@ -69,6 +70,7 @@
 }
 
 :root {
+    --width-custom: calc(100% - 0rem /* 32px */);
     --radius: 0.5rem;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
@@ -183,4 +185,14 @@
 
 [dir="ltr"] .bg-card-1{
   background: linear-gradient(-66.36deg, #547ACE -67.82%, #5EEFD6 97.03%); 
+}
+
+.w-calc-custom{
+  width: calc(100% - 2rem /* 32px */) !important;
+}
+
+@media not all and (min-width: 1024px) {
+  .w-calc-custom {
+      width: calc(100% - 2rem /* 32px */) !important;
+  }
 }
