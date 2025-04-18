@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { t } from "i18next";
 import { useContext } from "react";
 import { Button } from "@/components/ui/button";
-import WebHosting from "@/assets/WebHosting.png";
+import WebHosting from "@/assets/WebHosting-1.png";
 import CloudImg from "@/assets/Cloud.png";
 import VpsImg from "@/assets/OBJECTS.png";
 import SiteDesign from "@/assets/OBJECTS1.png";
