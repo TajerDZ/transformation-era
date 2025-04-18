@@ -144,6 +144,33 @@
         "total": "Total",
         "tax": "Value Added Tax (15%)"
       }
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Here you can manage your products and services.",
+      "renewal": "Renewal",
+      "promotion": "Promotion",
+      "hosting": "Hosting",
+      "hosting_plan": "Hosting Plan",
+      "domains": "Domains",
+      "domain_name": "Domain Name",
+      "period": "Period",
+      "expiration_date": "Expiration Date",
+      "movements": "Movements",
+      "products&services": "Products and Services",
+      "product/service": "Product/Service",
+      "price": "Price",
+      "renewal_date": "Renewal Date",
+      "upgrade_plan": "Upgrade Plan",
+      "site_details": "Site Details",
+      "server_details": "Server Details",
+      "table": {
+        "server_name": "Server Name",
+        "server_location": "Server Location",
+        "access_your_site_on": "Access your site on",
+        "access_your_site_with_www": "Access your site with www",
+        "website_IP_address": "Website IP Address"
+      }
     }
   },
   "status_item": {

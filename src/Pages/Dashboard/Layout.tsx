@@ -72,7 +72,7 @@ function Layout() {
             >
               <div
                 className={cn(
-                  "bottom-0 top-0 left-0 right-0 bg-background/60 z-[9]",
+                  "bottom-0 top-0 left-0 right-0 bg-background/60 z-[9] ",
                   open ? "max-lg:fixed" : "hidden"
                 )}
                 onClick={() => setOpen(false)}

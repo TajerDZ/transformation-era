@@ -10,6 +10,9 @@ import ForgetPassword from "./Pages/Auth/ForgetPassword";
 import Layout from "./Pages/Dashboard/Layout";
 import Home from "./Pages/Dashboard/Home";
 import Products from "./Pages/Dashboard/Products";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import Profile from "./Pages/Dashboard/Profile";
+import ChangePassword from "./Pages/Dashboard/ChangePassword";
 const cookies = new Cookies(null, { path: "/" });
 function App() {
   const { i18n } = useTranslation();
@@ -37,7 +40,20 @@ function App() {
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/dashboard" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="products" element={<Products />} />
+          <Route path="products">
+            <Route index element={<Products />} />
+            <Route path=":productId">
+              <Route index element={<Dashboard />} />
+              <Route path="renewal" element={<div>Renewal</div>} />
+              <Route path="hosting" element={<div>Hosting</div>} />
+              <Route path="domains" element={<div>Domains</div>} />
+              <Route path="ssl" element={<div>SSL</div>} />
+            </Route>
+          </Route>
+          <Route path="profile">
+            <Route index element={<Profile />} />
+            <Route path="change-password" element={<ChangePassword />} />
+          </Route>
           <Route path="store" element={<div>Store</div>} />
           <Route path="bills" element={<div>Bills</div>} />
           <Route path="*" element={<div>Not Found</div>} />

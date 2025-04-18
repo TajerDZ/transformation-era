@@ -53,11 +53,17 @@ function DropDownUser() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="text-primary-2">
+          <DropdownMenuItem
+            className="text-primary-2"
+            onClick={() => navigate("/dashboard/profile")}
+          >
             <Icon name="User" size={20} className="text-primary-2" />
             {t("header.profile")}
           </DropdownMenuItem>
-          <DropdownMenuItem className="text-primary-2">
+          <DropdownMenuItem
+            className="text-primary-2"
+            onClick={() => navigate("/dashboard/profile/change-password")}
+          >
             <Icon name="ListStart" size={20} className="text-primary-2" />
             {t("header.password")}
           </DropdownMenuItem>

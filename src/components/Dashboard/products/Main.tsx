@@ -19,6 +19,7 @@ import { useContext, useState } from "react";
 import { SideBarContext } from "@/hooks/SideBarContext";
 import { cn } from "@/lib/utils";
 import RenewalDialog from "./hosting/RenewalDialog";
+import { Link } from "react-router-dom";
 
 function Main() {
   const [isOpenRenewal, setIsOpenRenewal] = useState(false);
@@ -215,11 +216,14 @@ function Main() {
                 </TableCell>
                 <TableCell className="text-center text-secondary-1 font-medium">
                   <Button
+                    asChild
                     variant="outline"
                     className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
                   >
-                    <Icon name="LayoutGrid" size={16} />
-                    {t("products.table.dashboard")}
+                    <Link to={"notchpal.com"}>
+                      <Icon name="LayoutGrid" size={16} />
+                      {t("products.table.dashboard")}
+                    </Link>
                   </Button>
                 </TableCell>
               </TableRow>
@@ -243,11 +247,14 @@ function Main() {
                 </TableCell>
                 <TableCell className="text-center text-secondary-1 font-medium">
                   <Button
+                    asChild
                     variant="outline"
                     className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
                   >
-                    <Icon name="LayoutGrid" size={16} />
-                    {t("products.table.dashboard")}
+                    <Link to={"notchpal.com"}>
+                      <Icon name="LayoutGrid" size={16} />
+                      {t("products.table.dashboard")}
+                    </Link>
                   </Button>
                 </TableCell>
               </TableRow>
@@ -271,11 +278,14 @@ function Main() {
                 </TableCell>
                 <TableCell className="text-center text-secondary-1 font-medium">
                   <Button
+                    asChild
                     variant="outline"
                     className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
                   >
-                    <Icon name="LayoutGrid" size={16} />
-                    {t("products.table.dashboard")}
+                    <Link to={"notchpal.com"}>
+                      <Icon name="LayoutGrid" size={16} />
+                      {t("products.table.dashboard")}
+                    </Link>
                   </Button>
                 </TableCell>
               </TableRow>
