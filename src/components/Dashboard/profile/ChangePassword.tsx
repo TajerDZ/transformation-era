@@ -1,9 +1,19 @@
-import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { SideBarContext } from "@/hooks/SideBarContext";
 import { cn } from "@/lib/utils";
 import { t } from "i18next";
 import { useContext } from "react";
+import PadLock from "@/assets/icons/padlock.png";
 
 function ChangePassword() {
   const context = useContext(SideBarContext);
@@ -31,7 +41,38 @@ function ChangePassword() {
       </div>
       <div>
         <Card>
-          
+          <CardHeader>
+            <CardTitle>
+              <div className="flex items-center gap-3">
+                <img src={PadLock} alt="padlock" />
+                <h1 className="text-lg font-bold text-primary-2">
+                  {t("profile.password.title")}
+                </h1>
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>{t("profile.password.new_password")}</Label>
+                <Input type="password" placeholder="*********" />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("profile.password.confirm_new_password")}</Label>
+                <Input type="password" placeholder="*********" />
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <div className="flex items-center gap-3">
+              <Button className="bg-button">
+                {t("profile.password.save_changes")}
+              </Button>
+              <Button variant="outline" className="bg-white text-gray-500">
+                {t("profile.password.cancel")}
+              </Button>
+            </div>
+          </CardFooter>
         </Card>
       </div>
     </div>

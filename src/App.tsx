@@ -13,6 +13,9 @@ import Products from "./Pages/Dashboard/Products";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Profile from "./Pages/Dashboard/Profile";
 import ChangePassword from "./Pages/Dashboard/ChangePassword";
+import Store from "./Pages/Dashboard/Store";
+import Hosting from "./Pages/Dashboard/Hosting";
+import WebDesign from "./Pages/Dashboard/WebDesign";
 const cookies = new Cookies(null, { path: "/" });
 function App() {
   const { i18n } = useTranslation();
@@ -54,7 +57,11 @@ function App() {
             <Route index element={<Profile />} />
             <Route path="change-password" element={<ChangePassword />} />
           </Route>
-          <Route path="store" element={<div>Store</div>} />
+          <Route path="store">
+            <Route index element={<Store />} />
+            <Route path="hosting" element={<Hosting />} />
+            <Route path="website-design" element={<WebDesign />} />
+          </Route>
           <Route path="bills" element={<div>Bills</div>} />
           <Route path="*" element={<div>Not Found</div>} />
         </Route>

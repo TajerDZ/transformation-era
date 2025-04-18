@@ -210,14 +210,30 @@
     },
     "info": {
       "title": "بيانات الحساب",
-      "name": "الاسم",
       "email": "البريد الإلكتروني",
-      "phone": "رقم الهاتف",
-      "address": "العنوان",
-      "city": "المدينة",
-      "country": "الدولة",
+      "phone": "رقم الجوال",
+      "language": "اللغة",
       "save_changes": "حفظ التغييرات",
-      "cancel": "إلغاء"
+      "cancel": "إلغاء",
+      "first_name": "الاسم الأول",
+      "last_name": "الإسم الأخير",
+      "first_name_placeholder": "أدخل الاسم الأول",
+      "last_name_placeholder": "أدخل الاسم الأخير",
+      "email_placeholder": "أدخل البريد الإلكتروني",
+      "phone_placeholder": "أدخل رقم الجوال",
+      "language_placeholder": "اختر اللغة"
+    }
+  },
+  "store": {
+    "title": "المتجر",
+    "explore_now": "استكشف الآن",
+    "hosting": {
+      "title": "استضافة المواقع",
+      "subscribe_now": "اشترك الآن"
+    },
+    "web_design": {
+      "title": "تصميم المواقع",
+      "subscribe_now": "اشترك الآن"
     }
   }
 }
