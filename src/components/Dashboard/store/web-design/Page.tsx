@@ -25,7 +25,7 @@ function Page() {
   }
   const { open } = context;
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 ">
       <div className="space-y-3">
         <h1 className="text-xl font-bold ">{t("store.web_design.title")}</h1>
         <ul className="flex gap-1 text-sm font-medium">

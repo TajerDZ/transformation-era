@@ -99,18 +99,14 @@ function Information() {
                   <div className="space-y-2 col-span-2">
                     <Label>{t("profile.info.language")}</Label>
                     <Select>
-                      <SelectTrigger className="bg-input w-full">
+                      <SelectTrigger className="bg-input w-full border border-">
                         <SelectValue
                           placeholder={t("profile.info.language_placeholder")}
                         />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="en">English</SelectItem>
-                        <SelectItem value="fr">French</SelectItem>
-                        <SelectItem value="es">Spanish</SelectItem>
-                        <SelectItem value="de">German</SelectItem>
-                        <SelectItem value="it">Italian</SelectItem>
-                        <SelectItem value="pt">Portuguese</SelectItem>
+                        <SelectItem value="ar">العربية</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
