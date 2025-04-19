@@ -17,6 +17,7 @@ import Store from "./Pages/Dashboard/Store";
 import Hosting from "./Pages/Dashboard/Hosting";
 import WebDesign from "./Pages/Dashboard/WebDesign";
 import Bills from "./Pages/Dashboard/Bills";
+import Notification from "./Pages/Dashboard/Notification";
 const cookies = new Cookies(null, { path: "/" });
 function App() {
   const { i18n } = useTranslation();
@@ -64,6 +65,7 @@ function App() {
             <Route path="website-design" element={<WebDesign />} />
           </Route>
           <Route path="bills" element={<Bills />} />
+          <Route path="notifications" element={<Notification />} />
           <Route path="*" element={<div>Not Found</div>} />
         </Route>
       </Routes>

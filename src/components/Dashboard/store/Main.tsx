@@ -78,13 +78,13 @@ function Main() {
           <li className="text-gray-500">{t("store.title")}</li>
         </ul>
         <Separator
-          className={cn(open && "max-lg:!w-[100%]")}
+          className={cn("max-sm:!w-full", open && "max-lg:!w-[100%]")}
           style={{
             width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
           }}
         />
       </div>
-      <div className="grid grid-cols-3 gap-4 ">
+      <div className="grid grid-cols-3 max-sm:grid-cols-1 max-md:grid-cols-2 gap-4 ">
         {storeItems.map((item) => (
           <Card className="shadow-none rounded-lg p-2 max-md:p-2" key={item.id}>
             <div className="space-y-4 flex flex-col h-full">

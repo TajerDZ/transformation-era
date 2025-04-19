@@ -8,6 +8,7 @@ import { SideBarContext } from "@/hooks/SideBarContext";
 import Header from "@/components/Dashboard/header/Header";
 import SideBar from "@/components/Dashboard/sidebar/SideBar";
 import { cn } from "@/lib/utils";
+import SideBarMobile from "@/components/Dashboard/sidebar/SideBarMobile";
 // import { toast } from "@/hooks/use-toast";
 // import { t } from "i18next";
 
@@ -55,15 +56,20 @@ function Layout() {
           <div className="flex overflow-x-auto ">
             <div
               className={cn(
-                "z-10 fixed bottom-0 top-0 transition-all duration-300  h-screen"
+                "z-10 fixed bottom-0 sm:top-0 transition-all duration-300 sm:h-screen max-sm:end-0 max-sm:start-0 max-sm:h-18"
               )}
             >
-              <SideBar />
+              <div className="max-sm:hidden">
+                <SideBar />
+              </div>
+              <div className="sm:hidden">
+                <SideBarMobile />
+              </div>
             </div>
             <div
               className={cn(
-                "mt-[6rem]",
-                " ms-[4.5rem]  flex-1 relative px-5 transition-all duration-300",
+                "mt-[6rem] max-sm:mb-[6rem] pb-[2rem]",
+                " ms-[4.5rem] max-sm:!ms-0  flex-1 relative px-5 transition-all duration-300",
                 open ? "lg:ms-64" : "ms-24"
               )}
               style={{

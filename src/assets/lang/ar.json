@@ -238,8 +238,12 @@
   },
   "bills": {
     "title": "الفواتير",
-    "fillter": "تصفية",
+    "filter": "تصفية",
     "search": "البحث",
+    "filter_results": "تصفية النتائج",
+    "clear_filter": "مسح الفلتر",
+    "search_button": "إجراء التصفية",
+    "search_cancel": "إلغاء",
     "table": {
       "bill_number": "رقم الفاتورة",
       "bill_date": "تاريخ الفاتورة",
@@ -259,5 +263,8 @@
       "tax": "الضريبة المضافة (15%)",
       "total": "الإجمالي"
     }
+  },
+  "notifications": {
+    "title": "الإشعارات"
   }
 }

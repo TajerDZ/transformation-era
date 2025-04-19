@@ -49,12 +49,6 @@ const items = [
       { name: "sidebar.store", icon: "Store", to: "store" },
       { name: "sidebar.bills", icon: "Files", to: "bills" },
     ],
-  },
-  {
-    group: [
-      { name: "sidebar.notifications", icon: "Bell", to: "customers" },
-      { name: "sidebar.support", icon: "CircleAlert", to: "suppliers" },
-    ],
     last: true,
   },
 ] as {

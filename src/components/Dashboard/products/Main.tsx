@@ -38,7 +38,7 @@ function Main() {
           <li className="text-gray-500">{t("products.title")}</li>
         </ul>
         <Separator
-          className={cn(open && "max-lg:!w-[100%]")}
+          className={cn("max-sm:!w-full", open && "max-lg:!w-[100%]")}
           style={{
             width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
           }}
@@ -46,7 +46,7 @@ function Main() {
       </div>
       <Card
         className={cn(
-          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300",
+          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300 max-sm:!w-full",
           open && "max-lg:!w-[100%]"
         )}
         style={{
@@ -107,7 +107,7 @@ function Main() {
 
       <Card
         className={cn(
-          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300",
+          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300 max-sm:!w-full",
           open && "max-lg:!w-[100%]"
         )}
         style={{
@@ -165,7 +165,7 @@ function Main() {
 
       <Card
         className={cn(
-          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300",
+          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300 max-sm:!w-full",
           open && "max-lg:!w-[100%]"
         )}
         style={{

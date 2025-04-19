@@ -6,6 +6,8 @@ import DropDownChangeLang from "./DropDownChangeLang";
 import { useContext } from "react";
 import { SideBarContext } from "@/hooks/SideBarContext";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
+import Logo from "@/assets/logo.png";
 
 function Header() {
   const context = useContext(SideBarContext);
@@ -17,11 +19,12 @@ function Header() {
     <div
       className={cn(
         "h-18 border-b fixed top-0 left-0 right-0 bg-background z-[10] transition-all duration-300",
-        open ? "ps-64" : "ps-24"
+        open ? "sm:ps-64" : "sm:ps-24"
       )}
     >
-      <div className="flex items-center justify-between h-full px-4 pe-10">
+      <div className="flex items-center justify-between h-full px-4 max-sm:px-2 pe-10">
         <div>
+          <img src={Logo} alt="Logo" className="w-12 mx-auto ms-2 sm:hidden" />
           <div
             className={cn("relative max-md:hidden", open && "max-lg:hidden")}
           >
@@ -36,10 +39,10 @@ function Header() {
           </div>
         </div>
         <div className="flex items-center gap-0">
-          <span className="relative ">
+          <Link to="/dashboard/notifications" className="relative ">
             <span className="absolute bottom-1 start-0 flex h-2 w-2 items-center justify-center rounded-full bg-red-500 text-xs text-white z-1" />
             <Icon name="Bell" size={26} className="text-muted-foreground" />
-          </span>
+          </Link>
           <DropDownChangeLang />
           <DropDownUser />
         </div>

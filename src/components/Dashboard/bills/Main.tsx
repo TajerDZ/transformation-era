@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import AutocompleteFilter from "./ActionHeader/AutocompleteFilter";
 function Main() {
   const context = useContext(SideBarContext);
   if (!context) {
@@ -29,16 +30,17 @@ function Main() {
           <li className="text-gray-500">{t("products.title")}</li>
         </ul>
         <Separator
-          className={cn(open && "max-lg:!w-[100%]")}
+          className={cn("max-sm:!w-full", open && "max-lg:!w-[100%]")}
           style={{
             width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
           }}
         />
       </div>
-      <div>
+      <div className="space-y-3">
+        <AutocompleteFilter />
         <Card
           className={cn(
-            "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300",
+            "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300 max-sm:!w-full",
             open && "max-lg:!w-[100%]"
           )}
           style={{
@@ -67,22 +69,25 @@ function Main() {
               <TableHead className="text-muted-foreground text-center"></TableHead>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell className="text-center">INV-20250401</TableCell>
-                <TableCell className="text-center">01-04-2025</TableCell>
-                <TableCell className="text-center">
-                  استضافة مشتركة - سنة
-                </TableCell>
-                <TableCell className="text-center">01-04-2026</TableCell>
-                <TableCell className="text-center">4500 ريال</TableCell>
-                <TableCell className="text-center">
-                  <Button variant="secondary" className="text-primary-2">
-                    {t("bills.table.edit_bill")}
-                  </Button>
-                </TableCell>
-              </TableRow>
+              {Array.from({ length: 10 }, (_, index) => (
+                <TableRow key={index}>
+                  <TableCell className="text-center">INV-20250401</TableCell>
+                  <TableCell className="text-center">01-04-2025</TableCell>
+                  <TableCell className="text-center">
+                    استضافة مشتركة - سنة
+                  </TableCell>
+                  <TableCell className="text-center">01-04-2026</TableCell>
+                  <TableCell className="text-center">4500 ريال</TableCell>
+                  <TableCell className="text-center">
+                    <Button variant="secondary" className="text-primary-2">
+                      {t("bills.table.edit_bill")}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
+          <div className="flex items-center justify-between p-4"></div>
         </Card>
       </div>
     </div>
