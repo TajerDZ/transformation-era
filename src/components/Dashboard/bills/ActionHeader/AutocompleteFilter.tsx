@@ -14,14 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
 import { dir, t } from "i18next";
-import { cn } from "@/lib/utils";
-import { useState } from "react";
-import { format } from "date-fns";
 
 function AutocompleteFilter() {
-  const [date, setDate] = useState<Date>();
   return (
     <div className="flex items-center gap-2 max-sm:flex-col max-sm:items-start">
       <div>
@@ -39,35 +34,6 @@ function AutocompleteFilter() {
             <div className="space-y-4">
               <h1 className="font-bold">{t("bills.filter_results")}</h1>
               <div className="space-y-4 ">
-                <div className="space-y-2">
-                  <Label>{t("bills.table.bill_date")}</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full justify-start text-left font-normal bg-input",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <Icon name="Calendar" size={16} />
-                        {date ? (
-                          format(date, "PPP")
-                        ) : (
-                          <span>{t("bills.table.bill_date")}</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
                 <div className="space-y-2">
                   <Label>{t("bills.table.service")}</Label>
                   <Select dir={dir()}>

@@ -31,7 +31,11 @@
     "confirm_password": "تأكيد كلمة المرور",
     "confirm_password_placeholder": "أكد كلمة المرور",
     "phone": "رقم الهاتف",
-    "phone_placeholder": "أدخل رقم هاتفك"
+    "phone_placeholder": "أدخل رقم هاتفك",
+    "first_name": "الاسم الأول",
+    "first_name_placeholder": "أدخل اسمك الأول",
+    "last_name": "اسم العائلة",
+    "last_name_placeholder": "أدخل اسم عائلتك"
   },
   "forget_password": {
     "title": "هل نسيت كلمة المرور؟",
@@ -266,5 +270,23 @@
   },
   "notifications": {
     "title": "الإشعارات"
+  },
+  "validators": {
+    "required": "هذا الحقل مطلوب",
+    "email": "البريد الإلكتروني غير صالح",
+    "phone": "رقم الجوال غير صالح",
+    "passwordValidator": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، بما في ذلك حرف كبير وحرف صغير ورقم ورمز خاص",
+    "confirmedValidator": "تأكيد كلمة المرور لا يتطابق مع كلمة المرور",
+    "enterNumberBetween": "يجب أن يكون الرقم بين {{min}} و {{max}}",
+    "integerValidator": "يجب أن يكون هذا الحقل عدد صحيح",
+    "numericValidator": "يجب أن يكون هذا الحقل رقميًا",
+    "regexValidator": "تنسيق حقل Regex غير صالح",
+    "alphaValidator": "قد يحتوي حقل Alpha على أحرف أبجدية فقط",
+    "urlValidator": "عنوان URL غير صالح",
+    "lengthValidator": "يجب أن يكون طول حقل الأحرف {{length}} حرفًا.",
+    "minlengthValidator": "يجب أن يكون طول حقل الأحرف {{minlength}} حرفًا على الأقل.",
+    "greaterValidator": "يجب أن يكون الرقم أكبر من {{greater}}",
+    "greaterOrEqualValidator": "يجب أن يكون الرقم أكبر من أو يساوي {{greaterOrEqual}}",
+    "positiveValidator": "يجب أن تكون القيمة موجبة"
   }
 }

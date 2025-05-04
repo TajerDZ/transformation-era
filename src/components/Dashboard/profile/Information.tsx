@@ -12,18 +12,79 @@ import { Separator } from "@/components/ui/separator";
 import { SideBarContext } from "@/hooks/SideBarContext";
 import { cn } from "@/lib/utils";
 import { t } from "i18next";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import UserAccount from "@/assets/icons/user-account.png";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import CameraIcon from "@/assets/icons/Camera.png";
 
+import CameraIcon from "@/assets/icons/Camera.png";
+import { emailValidator, requiredValidator } from "@/utils/validators";
+import useDynamicForm from "@/hooks/useDynamicForm";
+import useStore from "@/store/useStore";
+import { useMutation } from "@apollo/client";
+import { UpdateUser_Mutation } from "@/graphql/mutation/users/UpdateUser";
+import { toast } from "sonner";
+type FormData = {
+  email: string;
+  phone: string;
+  firstname: string;
+  lastname: string;
+};
 function Information() {
+  const [validationSchema] = useState({
+    email: {
+      active: true,
+      rules: [(value: string) => emailValidator(value)],
+    },
+    phone: {
+      active: true,
+      rules: [(value: string) => requiredValidator(value)],
+    },
+    firstname: {
+      active: true,
+      rules: [(value: string) => requiredValidator(value)],
+    },
+    lastname: {
+      active: true,
+      rules: [(value: string) => requiredValidator(value)],
+    },
+  });
+  const user = useStore((state: any) => state.userData);
+
+  const { formState, handleInputChange, isChanged, validateForm, errors } =
+    useDynamicForm<FormData>(
+      {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        phone: user.phone,
+      },
+      validationSchema
+    );
+  const idUser = useStore((state: any) => state.idUser);
+  const updateUserData = useStore((state: any) => state.updateUserData);
+  const [updateUser, { loading }] = useMutation(UpdateUser_Mutation);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm() || !isChanged || loading) {
+      await updateUser({
+        variables: {
+          updateUserId: idUser,
+          content: formState,
+        },
+        onCompleted: ({ updateUser: { status, data } }) => {
+          if (status) {
+            toast("Information updated successfully", {
+              description: "Information updated successfully",
+              descriptionClassName: "!text-muted-foreground",
+            });
+            updateUserData(data);
+          }
+        },
+      });
+    } else {
+      console.log("Form is invalid");
+    }
+  };
+
   const context = useContext(SideBarContext);
   if (!context) {
     throw new Error("useSideBarContext must be used within a SideBarProvider");
@@ -43,12 +104,12 @@ function Information() {
         <Separator
           className={cn("max-sm:!w-full", open && "max-lg:!w-[100%]")}
           style={{
-            width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
+            width: open ? "calc(100vw - 19.6rem)" : "calc(100vw - 9.6rem)",
           }}
         />
       </div>
       <div>
-        <div>
+        <form onSubmit={handleSubmit}>
           <Card>
             <CardHeader>
               <CardTitle>
@@ -80,51 +141,62 @@ function Information() {
                     <Label>{t("profile.info.first_name")}</Label>
                     <Input
                       placeholder={t("profile.info.first_name_placeholder")}
+                      value={formState.firstname}
+                      onChange={(e) =>
+                        handleInputChange("firstname", e.target.value)
+                      }
+                      error={errors.firstname}
                     />
                   </div>
                   <div className="space-y-2">
                     <Label>{t("profile.info.last_name")}</Label>
                     <Input
                       placeholder={t("profile.info.last_name_placeholder")}
+                      value={formState.lastname}
+                      onChange={(e) =>
+                        handleInputChange("lastname", e.target.value)
+                      }
+                      error={errors.lastname}
                     />
                   </div>
                   <div className="space-y-2">
                     <Label>{t("profile.info.email")}</Label>
-                    <Input placeholder={t("profile.info.email_placeholder")} />
+                    <Input
+                      placeholder={t("profile.info.email_placeholder")}
+                      value={formState.email}
+                      onChange={(e) =>
+                        handleInputChange("email", e.target.value)
+                      }
+                      error={errors.email}
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label>{t("profile.info.phone")}</Label>
-                    <Input placeholder={t("profile.info.phone_placeholder")} />
-                  </div>
-                  <div className="space-y-2 col-span-2">
-                    <Label>{t("profile.info.language")}</Label>
-                    <Select>
-                      <SelectTrigger className="bg-input w-full border border-">
-                        <SelectValue
-                          placeholder={t("profile.info.language_placeholder")}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="en">English</SelectItem>
-                        <SelectItem value="ar">العربية</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Input
+                      placeholder={t("profile.info.phone_placeholder")}
+                      value={formState.phone}
+                      onChange={(e) =>
+                        handleInputChange("phone", e.target.value)
+                      }
+                      error={errors.phone}
+                    />
                   </div>
                 </div>
               </div>
             </CardContent>
             <CardFooter>
               <div className="flex items-center gap-3">
-                <Button className="bg-button">
-                  {t("profile.password.save_changes")}
+                <Button className="bg-button" disabled={loading || !isChanged}>
+                  {t("profile.info.save_changes")}
+                  {loading && <span className="ml-2 animate-spin">⏳</span>}
                 </Button>
-                <Button variant="outline" className="bg-white text-gray-500">
+                {/* <Button variant="outline" className="bg-white text-gray-500">
                   {t("profile.password.cancel")}
-                </Button>
+                </Button> */}
               </div>
             </CardFooter>
           </Card>
-        </div>
+        </form>
       </div>
     </div>
   );

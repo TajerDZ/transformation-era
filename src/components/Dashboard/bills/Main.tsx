@@ -23,11 +23,11 @@ function Main() {
   return (
     <div className="space-y-5">
       <div className="space-y-3">
-        <h1 className="text-xl font-bold ">{t("products.title")}</h1>
+        <h1 className="text-xl font-bold ">{t("bills.title")}</h1>
         <ul className="flex gap-1 text-sm font-medium">
           <li className="text-gray-500">{t("home.title")}</li>
           <li className="text-gray-500">-</li>
-          <li className="text-gray-500">{t("products.title")}</li>
+          <li className="text-gray-500">{t("bills.title")}</li>
         </ul>
         <Separator
           className={cn("max-sm:!w-full", open && "max-lg:!w-[100%]")}

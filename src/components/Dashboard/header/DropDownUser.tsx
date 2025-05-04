@@ -9,14 +9,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Icon from "@/components/ui/Icon";
+import useStore from "@/store/useStore";
 import { dir, t } from "i18next";
 import { useNavigate } from "react-router-dom";
 
 function DropDownUser() {
-  const user = {
-    name: "حمزة هاشم",
-    email: "user.user@gmail.com",
-  };
+  const user = useStore((state: any) => state.userData);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -30,11 +28,16 @@ function DropDownUser() {
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <img
-                src="https://s3-alpha-sig.figma.com/img/c09d/96f4/75773c7ca6c4519f4457986d459d77cb?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fEZ94Ytr3f8HXiHK4bT-hKm~ZfUhGyTzWwK4xf5Nu~VdE6UauTru2JMA2ZxTsVmPCVHyzkh75fZiO8U4b73cocWPCI2DBScbOZyMWz~FBp4N822Iu4qDmA81dkEEtEXZLfbgjwag7P3l2w~Fp5bIeQQ3mrmzZnK3hUMAscAD5alrIzhr2xGen9rrchA0h-pVCD2w4kGZsmwIyyfox2Ugr~qF9tzlCYUb8W39CVvVkcDoEYH20qaEe-RSIo2cM4xdr4Rqawvs1vyleLxqYhZYLDkgsdrru1kMSiNrCb5yeO8ePj5j4wgdvMY1gBicoNek7EQ6KXfiHFIdiwGX7UFYTA__"
+                src={
+                  user.thumbnail ??
+                  "https://s3-alpha-sig.figma.com/img/c09d/96f4/75773c7ca6c4519f4457986d459d77cb?Expires=1745798400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=dhkVEZWKrGKrKt9LbbIzYU283A0Y--xlBBRQbaX2w084h09LoMwghg3L-ap7jP~uxvTnvfEm72aA0fnWq7inNgwDGOPU9DYeKHyLigft8l473Bo97ncIdBKC-FV5XumvqpjpKrGU80hLnJwyhBBMsGrOSlASSpXRaJ6yIRt1acWR4lleFB97lyYoRGRrmHddECq~CqaAslFQZNoVRghm~az07Al8~h8Y7l79pXFWle17tuVyQLcyREeX-Oz2~2zg9qWeJsYFGpETGh4k7mc3px327lS6CvMeKsXwajIQRz7Rz08UosPE1sPefIB7d0i09uXl77Ukde~2NaUGouQrEA__"
+                }
                 alt="user"
                 className="w-8 h-8 object-cover rounded-full"
               />
-              <p>{user.name}</p>
+              <p>
+                {user.firstname} {user.lastname}{" "}
+              </p>
             </div>
             <span>
               <Icon

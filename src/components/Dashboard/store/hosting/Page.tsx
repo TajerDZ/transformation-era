@@ -3,11 +3,27 @@ import { Separator } from "@/components/ui/separator";
 import { SideBarContext } from "@/hooks/SideBarContext";
 import { cn } from "@/lib/utils";
 import { t } from "i18next";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { ProductGraphql } from "@/types/product";
+import { useQuery } from "@apollo/client";
+import { Product_QUERY } from "@/graphql/queries/products/Product";
+import { useParams } from "react-router-dom";
 
 function Page() {
+  const { idProduct } = useParams();
+  const [item, setItem] = useState<ProductGraphql>();
+
+  /*const { loading } =*/ useQuery(Product_QUERY, {
+    fetchPolicy: "network-only",
+    variables: {
+      productId: idProduct,
+    },
+    onCompleted: ({ product: data }) => {
+      setItem(data);
+    },
+  });
   const context = useContext(SideBarContext);
   if (!context) {
     throw new Error("useSideBarContext must be used within a SideBarProvider");
@@ -16,13 +32,13 @@ function Page() {
   return (
     <div className="space-y-5">
       <div className="space-y-3">
-        <h1 className="text-xl font-bold ">{t("store.hosting.title")}</h1>
+        <h1 className="text-xl font-bold ">{item?.name}</h1>
         <ul className="flex gap-1 text-sm font-medium">
           <li className="text-gray-500">{t("home.title")}</li>
           <li className="text-gray-500">-</li>
           <li className="text-gray-500">{t("store.title")}</li>
           <li className="text-gray-500">-</li>
-          <li className="text-gray-500">{t("store.hosting.title")}</li>
+          <li className="text-gray-500">{item?.name}</li>
         </ul>
         <Separator
           className={cn("max-sm:!w-full", open && "max-lg:!w-[100%]")}
@@ -32,16 +48,16 @@ function Page() {
         />
       </div>
       <div className="grid grid-cols-2 gap-10 max-md:grid-cols-1 max-lg:gap-5">
-        {Array.from({ length: 4 }, (_, index) => (
+        {item?.plans.map((plan) => (
           <Card
             className="shadow-none rounded-2xl p-4 max-md:p-4 bg-[#F2F3FF]"
-            key={index}
+            key={plan.id}
           >
             <div className="space-y-4">
               <div className="space-y-1">
-                <h1 className="font-semibold text-[#444444]">خطة التقدم</h1>
+                <h1 className="font-semibold text-[#444444]">{plan.name}</h1>
                 <span className="text-secondary-5 text-2xl font-bold block">
-                  1500
+                  {plan.prices[0].value}{" "}
                   <span className="text-sm">ريال/ سنويًا</span>
                 </span>
                 <p className="text-sm font-semibold text-[#7C7C7C] mt-4">
@@ -51,94 +67,16 @@ function Page() {
               <div>
                 <Table>
                   <TableBody>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        الرام العشوائي
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        500mb
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        الهارد ديسك
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        unlimited
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        الترافيك
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        MHZ 1000
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        عدد الملفات
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        100000
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        عدد الإتصالات في اللحظة
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        100
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        عدد الملفات
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        100
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        عدد الإيميلات
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        غير محدد
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        عدد قواعد البيانات
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        1
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        شهادة ssl
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        غير متوفر
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        access ssl
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        غير متوفر
-                      </TableCell>
-                    </TableRow>
-                    <TableRow className="border-b-0">
-                      <TableCell className="text-start text-muted-foreground w-1/2 font-medium">
-                        دعم فني 24 ساعة
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1 w-1/2 font-medium">
-                        مجاناً
-                      </TableCell>
-                    </TableRow>
+                    {plan.details.map((detail) => (
+                      <TableRow key={detail.id}>
+                        <TableCell className="text-sm font-semibold text-[#444444]">
+                          {detail.key}
+                        </TableCell>
+                        <TableCell className="text-sm font-semibold text-[#444444]">
+                          {detail.value}
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </div>

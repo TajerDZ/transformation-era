@@ -8,13 +8,60 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-
+import Icon from "@/components/ui/Icon";
+import useDynamicForm from "@/hooks/useDynamicForm";
+import { useState } from "react";
+import { emailValidator } from "@/utils/validators";
+import { useLazyQuery } from "@apollo/client";
+import { LOGIN_QUERY } from "@/graphql/queries/Login";
+import useStore from "@/store/useStore";
+type FormData = {
+  email: string;
+  password: string;
+};
 function Login() {
+  const [error, setError] = useState<string | null>(null);
+  const updateToken = useStore((state: any) => state.updateToken);
+  const updateUserData = useStore((state: any) => state.updateUserData);
+
+  const [validationSchema] = useState({
+    email: {
+      active: true,
+      rules: [(value: string) => emailValidator(value)],
+    },
+  });
+
+  const { formState, handleInputChange, isChanged, validateForm, errors } =
+    useDynamicForm<FormData>(
+      {
+        email: "",
+        password: "",
+      },
+      validationSchema
+    );
+  const [logIn, { loading }] = useLazyQuery(LOGIN_QUERY, {
+    fetchPolicy: "network-only",
+    onCompleted: ({ logIn: { token, user } }) => {
+      updateToken(token);
+      updateUserData(user);
+      navigate("/dashboard");
+    },
+    onError: (error) => {
+      const networkError = error.networkError as any;
+      setError(networkError?.result?.errors?.[0]?.message);
+    },
+  });
   const navigate = useNavigate();
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    navigate("/dashboard");
+
+    if (isChanged && !loading && validateForm()) {
+      await logIn({
+        variables: {
+          content: formState,
+        },
+      });
+    }
   };
   return (
     <div className="h-screen flex items-center justify-center bg-[#FCFEFF]">
@@ -27,7 +74,12 @@ function Login() {
           <h1 className="text-primary-navy text-center text-2xl font-bold">
             {t("login.title")}
           </h1>
-          <p className="text-center text-gray-500">{t("login.subtitle")}</p>
+          {error && (
+            <p className="text-sm text-red-500 mb-3 border border-red-500 bg-red-500/10 rounded-md p-2 flex items-center gap-2">
+              <Icon name="CircleAlert" className="w-4 h-4 mr-2" />
+              {t("login.error")}
+            </p>
+          )}
         </CardHeader>
         <CardContent className="flex flex-col items-center p-0">
           <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -35,7 +87,10 @@ function Login() {
               <Label>{t("login.email")}</Label>
               <Input
                 type="email"
+                value={formState.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
                 placeholder={t("login.email_placeholder")}
+                error={errors.email}
                 required
               />
             </div>
@@ -49,7 +104,13 @@ function Login() {
                   {t("login.forgot_password")}
                 </Link>
               </Label>
-              <Input type="password" placeholder="******" required />
+              <Input
+                type="password"
+                value={formState.password}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+                placeholder="******"
+                required
+              />
             </div>
             <div className="flex items-center gap-2">
               <Checkbox />
@@ -57,8 +118,13 @@ function Login() {
                 {t("login.remember_me")}
               </Label>
             </div>
-            <Button type="submit" className="w-full mt-4 bg-button">
+            <Button
+              type="submit"
+              className="w-full mt-4 bg-button"
+              disabled={loading || !isChanged}
+            >
               {t("login.login")}
+              {loading && <span className="ml-2 animate-spin">⏳</span>}
             </Button>
 
             <p className="text-center text-sm text-gray-500 ">
@@ -73,6 +139,7 @@ function Login() {
 
             <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
               <Button
+                type="button"
                 variant="outline"
                 className="w-full text-muted-foreground"
               >
@@ -80,6 +147,7 @@ function Login() {
                 {t("login.google")}
               </Button>
               <Button
+                type="button"
                 variant="outline"
                 className="w-full text-muted-foreground"
               >

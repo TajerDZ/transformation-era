@@ -13,26 +13,163 @@ import {
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-
+import useDynamicForm from "@/hooks/useDynamicForm";
+import { emailValidator, requiredValidator } from "@/utils/validators";
+import { useMutation } from "@apollo/client";
+import { ForgetPassword_Mutation } from "@/graphql/mutation/users/ForgetPassword";
+import { CheckOTPPassword_Mutation } from "@/graphql/mutation/users/CheckOTPPassword";
+import { ChangePassword_Mutation } from "@/graphql/mutation/users/ChangePassword";
+type FormData = {
+  email: string;
+  code: string;
+  password: string;
+};
 function ForgetPassword() {
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+
   const [step, setStep] = useState(1);
   const [timer, setTimer] = useState(60);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
+  const [validationSchema, setValidationSchema] = useState({
+    email: {
+      active: true,
+      rules: [(value: string) => emailValidator(value)],
+    },
+    code: {
+      active: false,
+      rules: [(value: string) => (value.length === 6 ? "" : "Invalid code")],
+    },
+    password: {
+      active: false,
+      rules: [(value: string) => requiredValidator(value)],
+    },
+  });
+  const { formState, handleInputChange, isChanged, validateForm, errors } =
+    useDynamicForm<FormData>(
+      {
+        email: "",
+        code: "",
+        password: "",
+      },
+      validationSchema
+    );
 
-  const nextStep = () => {
-    if (step === 1) {
-      setStep(2);
-    } else if (step === 2) {
-      setStep(3);
-    } else if (step === 3) {
-      // Handle password reset logic here
-      navigate("/"); // Redirect to login page after password reset
+  const [forgetPassword, { loading }] = useMutation(ForgetPassword_Mutation, {
+    fetchPolicy: "network-only",
+    variables: {
+      email: formState.email,
+    },
+
+    onCompleted: ({ forgetPassword: { status } }) => {
+      if (status) {
+        setStep(2);
+      }
+    },
+    onError: (error) => {
+      const networkError = error.networkError as any;
+      setError(networkError?.result?.errors?.[0]?.message);
+    },
+  });
+  const [checkOTPPassword, { loading: loadingCheck }] = useMutation(
+    CheckOTPPassword_Mutation,
+    {
+      fetchPolicy: "network-only",
+      variables: {
+        email: formState.email,
+        code: formState.code,
+      },
+
+      onCompleted: ({ checkOTPPassword: { status } }) => {
+        if (status) {
+          setStep(3);
+        } else {
+          setError("Invalid code");
+        }
+      },
+      onError: (error) => {
+        const networkError = error.networkError as any;
+        setError(networkError?.result?.errors?.[0]?.message);
+      },
+    }
+  );
+
+  const [changePassword, { loading: loadingChange }] = useMutation(
+    ChangePassword_Mutation,
+    {
+      fetchPolicy: "network-only",
+      variables: {
+        content: {
+          email: formState.email,
+          code: formState.code,
+          password: formState.password,
+        },
+      },
+
+      onCompleted: ({ changePassword: { status } }) => {
+        if (status) {
+          navigate("/");
+        }
+      },
+      onError: (error) => {
+        const networkError = error.networkError as any;
+        setError(networkError?.result?.errors?.[0]?.message);
+      },
+    }
+  );
+
+  const nextStep = async () => {
+    if (
+      isChanged &&
+      (!loading || !loadingCheck || !loadingChange) &&
+      validateForm()
+    ) {
+      if (step === 1) {
+        await forgetPassword();
+      } else if (step === 2) {
+        await checkOTPPassword();
+      } else if (step === 3) {
+        await changePassword();
+        // Handle password reset logic here
+        // Redirect to login page after password reset
+      }
     }
   };
 
   useEffect(() => {
+    if (step === 1) {
+      setValidationSchema((prev) => ({
+        ...prev,
+        email: {
+          ...prev.email,
+          active: true,
+        },
+        code: {
+          ...prev.code,
+          active: false,
+        },
+        password: {
+          ...prev.password,
+          active: false,
+        },
+      }));
+    }
     if (step === 2) {
+      setValidationSchema((prev) => ({
+        ...prev,
+        email: {
+          ...prev.email,
+          active: false,
+        },
+        code: {
+          ...prev.code,
+          active: true,
+        },
+        password: {
+          ...prev.password,
+          active: false,
+        },
+      }));
       const interval = setInterval(() => {
         setTimer((prev) => {
           if (prev <= 1) {
@@ -44,6 +181,23 @@ function ForgetPassword() {
         });
       }, 1000);
       return () => clearInterval(interval);
+    }
+    if (step === 3) {
+      setValidationSchema((prev) => ({
+        ...prev,
+        email: {
+          ...prev.email,
+          active: false,
+        },
+        code: {
+          ...prev.code,
+          active: false,
+        },
+        password: {
+          ...prev.password,
+          active: true,
+        },
+      }));
     }
   }, [step]);
   return (
@@ -99,26 +253,71 @@ function ForgetPassword() {
                       type="email"
                       placeholder={t("forget_password.email_placeholder")}
                       required
+                      value={formState.email}
+                      onChange={(e) => {
+                        handleInputChange("email", e.target.value);
+                      }}
+                      error={errors.email}
                     />
                   </div>
                 ),
                 2: (
                   <div className="space-y-2 flex justify-center" dir="ltr">
                     <InputOTP
-                      maxLength={4}
+                      maxLength={6}
                       pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+                      value={formState.code}
+                      onChange={(e) => {
+                        handleInputChange("code", e);
+                      }}
                     >
-                      <InputOTPGroup className="mx-2">
+                      <InputOTPGroup
+                        className={cn(
+                          "mx-2",
+                          (errors.code || error) && "border-red-500"
+                        )}
+                      >
                         <InputOTPSlot index={0} className="h-12 w-12" />
                       </InputOTPGroup>
-                      <InputOTPGroup className="mx-2">
+                      <InputOTPGroup
+                        className={cn(
+                          "mx-2",
+                          (errors.code || error) && "border-red-500"
+                        )}
+                      >
                         <InputOTPSlot index={1} className="h-12 w-12" />
                       </InputOTPGroup>
-                      <InputOTPGroup className="mx-2">
+                      <InputOTPGroup
+                        className={cn(
+                          "mx-2",
+                          (errors.code || error) && "border-red-500"
+                        )}
+                      >
                         <InputOTPSlot index={2} className="h-12 w-12" />
                       </InputOTPGroup>
-                      <InputOTPGroup className="mx-2">
+                      <InputOTPGroup
+                        className={cn(
+                          "mx-2",
+                          (errors.code || error) && "border-red-500"
+                        )}
+                      >
                         <InputOTPSlot index={3} className="h-12 w-12" />
+                      </InputOTPGroup>
+                      <InputOTPGroup
+                        className={cn(
+                          "mx-2",
+                          (errors.code || error) && "border-red-500"
+                        )}
+                      >
+                        <InputOTPSlot index={4} className="h-12 w-12" />
+                      </InputOTPGroup>
+                      <InputOTPGroup
+                        className={cn(
+                          "mx-2",
+                          (errors.code || error) && "border-red-500"
+                        )}
+                      >
+                        <InputOTPSlot index={5} className="h-12 w-12" />
                       </InputOTPGroup>
                     </InputOTP>
                   </div>
@@ -127,11 +326,16 @@ function ForgetPassword() {
                   <>
                     <div className="space-y-2">
                       <Label>{t("forget_password.new_password")}</Label>
-                      <Input type="password" placeholder="*******" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>{t("forget_password.confirm_new_password")}</Label>
-                      <Input type="password" placeholder="*******" required />
+                      <Input
+                        type="password"
+                        placeholder="*******"
+                        required
+                        value={formState.password}
+                        onChange={(e) => {
+                          handleInputChange("password", e.target.value);
+                        }}
+                        error={errors.password}
+                      />
                     </div>
                   </>
                 ),
@@ -142,6 +346,7 @@ function ForgetPassword() {
               type="button"
               className="w-full mt-4 bg-button"
               onClick={() => nextStep()}
+              disabled={loading || loadingCheck || loadingChange || !isChanged}
             >
               {
                 {
@@ -150,6 +355,9 @@ function ForgetPassword() {
                   3: t("forget_password.reset_password"),
                 }[step]
               }
+              {(loading || loadingCheck || loadingChange) && (
+                <span className="ml-2 animate-spin">⏳</span>
+              )}
             </Button>
             {step === 2 && (
               <div className="flex justify-center items-center">

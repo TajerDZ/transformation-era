@@ -15,7 +15,6 @@ import Profile from "./Pages/Dashboard/Profile";
 import ChangePassword from "./Pages/Dashboard/ChangePassword";
 import Store from "./Pages/Dashboard/Store";
 import Hosting from "./Pages/Dashboard/Hosting";
-import WebDesign from "./Pages/Dashboard/WebDesign";
 import Bills from "./Pages/Dashboard/Bills";
 import Notification from "./Pages/Dashboard/Notification";
 const cookies = new Cookies(null, { path: "/" });
@@ -61,8 +60,7 @@ function App() {
           </Route>
           <Route path="store">
             <Route index element={<Store />} />
-            <Route path="hosting" element={<Hosting />} />
-            <Route path="website-design" element={<WebDesign />} />
+            <Route path=":idProduct" element={<Hosting />} />
           </Route>
           <Route path="bills" element={<Bills />} />
           <Route path="notifications" element={<Notification />} />
