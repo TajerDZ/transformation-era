@@ -20,9 +20,49 @@ import { SideBarContext } from "@/hooks/SideBarContext";
 import { cn } from "@/lib/utils";
 import RenewalDialog from "./hosting/RenewalDialog";
 import { Link } from "react-router-dom";
+import { OrderGraphql } from "@/types/orders";
+import { AllOrderClient_QUERY } from "@/graphql/queries/orders/AllOrderClient";
+import { useQuery } from "@apollo/client";
+import useStore from "@/store/useStore";
+import { formatDate } from "@/utils/formatters";
 
 function Main() {
   const [isOpenRenewal, setIsOpenRenewal] = useState(false);
+  const [selectedItemRenewal, setSelectedItemRenewal] =
+    useState<OrderGraphql | null>(null);
+  const [itemsHosting_plan, setItemsHosting_plan] = useState<OrderGraphql[]>(
+    []
+  );
+  const [itemsDomains, setItemsDomains] = useState<OrderGraphql[]>([]);
+  const [itemsProducts_services, setItemsProducts_services] = useState<
+    OrderGraphql[]
+  >([]);
+  const idUser = useStore((state: any) => state.idUser);
+  /*const { loading } =*/ useQuery(AllOrderClient_QUERY, {
+    fetchPolicy: "network-only",
+    variables: { idUser: idUser },
+    onCompleted: ({ allOrderClient: { data } }) => {
+      if (data.length > 0) {
+        const hosting_plan = data.filter(
+          (item: OrderGraphql) => item.section === "hosting_plan"
+        );
+        const domains = data.filter(
+          (item: OrderGraphql) => item.section === "domains"
+        );
+        const products_services = data.filter(
+          (item: OrderGraphql) => item.section === "products_services"
+        );
+        setItemsHosting_plan(hosting_plan);
+        setItemsDomains(domains);
+        setItemsProducts_services(products_services);
+      }
+    },
+  });
+
+  const handleRenewal = (item: OrderGraphql) => {
+    setSelectedItemRenewal(item);
+    setIsOpenRenewal(true);
+  };
   const context = useContext(SideBarContext);
   if (!context) {
     throw new Error("useSideBarContext must be used within a SideBarProvider");
@@ -76,30 +116,45 @@ function Main() {
               </TableHead>
             </TableHeader>
             <TableBody>
-              <TableRow className="divide-x-1">
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  Plus Hosting
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  12 شهر
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  01-04-2025
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <div className="flex items-center justify-center gap-2">
-                    <Button
-                      className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
-                      onClick={() => setIsOpenRenewal(true)}
-                    >
-                      {t("products.table.renewal")}
-                    </Button>
-                    <Button className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1">
-                      {t("products.table.promotion")}
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
+              {itemsHosting_plan.length > 0 ? (
+                itemsHosting_plan.map((item: OrderGraphql) => (
+                  <TableRow className="divide-x-1" key={item.id}>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {item.domainName}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {item.plan.name}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {formatDate(item.renewalDate)}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      <div className="flex items-center justify-center gap-2">
+                        <Button
+                          className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
+                          onClick={() => handleRenewal(item)}
+                        >
+                          {t("products.table.renewal")}
+                        </Button>
+                        <Button className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1">
+                          {t("products.table.promotion")}
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow className="h-32">
+                  <TableCell colSpan={4} className="text-center ">
+                    <div className="flex flex-col justify-center items-center gap-5">
+                      <img src="/emptyData.svg" alt="" className="w-20" />
+                      <h1 className="text-muted-foreground">
+                        {t("No data available in the table")}
+                      </h1>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
@@ -137,27 +192,44 @@ function Main() {
               </TableHead>
             </TableHeader>
             <TableBody>
-              <TableRow className="divide-x-1">
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  Plus Hosting
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  12 شهر
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  01-04-2025
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <div className="flex items-center justify-center gap-2">
-                    <Button className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5">
-                      {t("products.table.renewal")}
-                    </Button>
-                    <Button className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1">
-                      {t("products.table.promotion")}
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
+              {itemsDomains.length > 0 ? (
+                itemsDomains.map((item: OrderGraphql) => (
+                  <TableRow className="divide-x-1" key={item.id}>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {item.domainName}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {item.plan.name}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {formatDate(item.renewalDate)}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
+                      >
+                        <Link to={"notchpal.com"}>
+                          <Icon name="LayoutGrid" size={16} />
+                          {t("products.table.details")}
+                        </Link>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow className="h-32">
+                  <TableCell colSpan={4} className="text-center ">
+                    <div className="flex flex-col justify-center items-center gap-5">
+                      <img src="/emptyData.svg" alt="" className="w-20" />
+                      <h1 className="text-muted-foreground">
+                        {t("No data available in the table")}
+                      </h1>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
@@ -196,106 +268,60 @@ function Main() {
               <TableHead className="text-muted-foreground text-center"></TableHead>
             </TableHeader>
             <TableBody>
-              <TableRow className="">
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  notchpal.com
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <div className="flex flex-col items-center justify-center">
-                    <span className=" font-medium">$208.80</span>
-                    <span className=" font-medium">ثلاث سنوات</span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  الأربعاء, ديسمبر 15th, 2027
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <Badge className="text-secondary-5 bg-secondary-5/10">
-                    {t("status_item.active")}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
-                  >
-                    <Link to={"notchpal.com"}>
-                      <Icon name="LayoutGrid" size={16} />
-                      {t("products.table.dashboard")}
-                    </Link>
-                  </Button>
-                </TableCell>
-              </TableRow>
-              <TableRow className="">
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  notchpal.com
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <div className="flex flex-col items-center justify-center">
-                    <span className=" font-medium">$208.80</span>
-                    <span className=" font-medium">ثلاث سنوات</span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  الأربعاء, ديسمبر 15th, 2027
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <Badge className="text-secondary-5 bg-secondary-5/10">
-                    {t("status_item.active")}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
-                  >
-                    <Link to={"notchpal.com"}>
-                      <Icon name="LayoutGrid" size={16} />
-                      {t("products.table.dashboard")}
-                    </Link>
-                  </Button>
-                </TableCell>
-              </TableRow>
-              <TableRow className="">
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  notchpal.com
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <div className="flex flex-col items-center justify-center">
-                    <span className=" font-medium">$208.80</span>
-                    <span className=" font-medium">ثلاث سنوات</span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  الأربعاء, ديسمبر 15th, 2027
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <Badge className="text-gray-400 bg-gray-400/10">
-                    {t("status_item.stopped")}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-center text-secondary-1 font-medium">
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
-                  >
-                    <Link to={"notchpal.com"}>
-                      <Icon name="LayoutGrid" size={16} />
-                      {t("products.table.dashboard")}
-                    </Link>
-                  </Button>
-                </TableCell>
-              </TableRow>
+              {itemsProducts_services.length > 0 ? (
+                itemsProducts_services.map((item: OrderGraphql) => (
+                  <TableRow className="divide-x-1" key={item.id}>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {item.product.name}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {item.pricePlans.value} ريال
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {formatDate(item.renewalDate)}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      <Badge variant="secondary">
+                        {t(`status_item.${item.status}`)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
+                      >
+                        <Link to={"notchpal.com"}>
+                          <Icon name="LayoutGrid" size={16} />
+                          {t("products.table.dashboard")}
+                        </Link>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow className="h-32">
+                  <TableCell colSpan={5} className="text-center ">
+                    <div className="flex flex-col justify-center items-center gap-5">
+                      <img src="/emptyData.svg" alt="" className="w-20" />
+                      <h1 className="text-muted-foreground">
+                        {t("No data available in the table")}
+                      </h1>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
       </Card>
 
-      {isOpenRenewal && (
-        <RenewalDialog isOpen={isOpenRenewal} onOpen={setIsOpenRenewal} />
+      {isOpenRenewal && selectedItemRenewal && (
+        <RenewalDialog
+          isOpen={isOpenRenewal}
+          onOpen={setIsOpenRenewal}
+          item={selectedItemRenewal}
+        />
       )}
     </div>
   );

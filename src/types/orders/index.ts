@@ -11,6 +11,8 @@ export type OrderGraphql = {
   product: ProductGraphql;
   user: UserGraphql;
   price: number;
+  type: string;
+  domainName: string;
   pricePlans: {
     id: string;
     key: string;

@@ -288,5 +288,6 @@
     "greaterValidator": "يجب أن يكون الرقم أكبر من {{greater}}",
     "greaterOrEqualValidator": "يجب أن يكون الرقم أكبر من أو يساوي {{greaterOrEqual}}",
     "positiveValidator": "يجب أن تكون القيمة موجبة"
-  }
+  },
+  "No data available in the table": "لا توجد بيانات متاحة في الجدول"
 }

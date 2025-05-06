@@ -10,9 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Icon from "@/components/ui/Icon";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
+
 import {
   Table,
   TableBody,
@@ -22,13 +20,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { OrderGraphql } from "@/types/orders";
 import { t } from "i18next";
+import { useState } from "react";
 
 type PropsDialog = {
   isOpen: boolean;
+  item: OrderGraphql;
   onOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
-function RenewalDialog({ isOpen, onOpen }: PropsDialog) {
+function RenewalDialog({ isOpen, onOpen, item }: PropsDialog) {
+  const [selectPrice, setSelectPrice] = useState<string>("");
   return (
     <Dialog
       open={isOpen}
@@ -69,10 +71,10 @@ function RenewalDialog({ isOpen, onOpen }: PropsDialog) {
                 <TableBody>
                   <TableRow className="divide-x">
                     <TableCell className="text-center text-secondary-1">
-                      AzqWOdUgMIgq91zbJ
+                      {item?.id}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1">
-                      Plus Hosting
+                      {item?.product?.name}
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -80,34 +82,35 @@ function RenewalDialog({ isOpen, onOpen }: PropsDialog) {
             </Card>
           </div>
           <div className="space-y-2">
-            {Array.from({ length: 3 }).map((_, i) => (
+            {item?.plan.prices.map((price) => (
               <Card
                 className={cn(
-                  "p-2 max-md:p-2 shadow-none flex-row justify-between rounded-md ",
-                  i == 0 && "border-primary-2"
+                  "p-2 max-md:p-2 shadow-none flex-row justify-between rounded-md hover:bg-primary-1/10 cursor-pointer",
+                  selectPrice == price.id && "border-primary-2"
                 )}
-                key={i}
+                onClick={() => setSelectPrice(price.id)}
+                key={price.id}
               >
                 <div className="flex items-center gap-2">
                   <span
                     className={cn(
                       "border border-gray-300 h-5 w-5 flex justify-center items-center rounded-full",
-                      i == 0 && "border-primary-2"
+                      selectPrice == price.id && "border-primary-2"
                     )}
                   >
-                    {i == 0 && (
+                    {selectPrice == price.id && (
                       <span className="bg-primary-2 w-3 h-3 block rounded-full" />
                     )}
                   </span>
-                  <p>3 Years</p>
+                  <p>{price.key}</p>
                 </div>
                 <Badge className="text-[10px] bg-primary-1">
-                  1500 ريال/السنة
+                  {price.value} ريال
                 </Badge>
               </Card>
             ))}
           </div>
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Label className="text-muted-foreground">
               {t("products.dialog.renewal.code_lable")}
             </Label>
@@ -123,7 +126,7 @@ function RenewalDialog({ isOpen, onOpen }: PropsDialog) {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="">
             <Card className="p-0 max-md:p-0 shadow-none rounded-md flex-row justify-between bg-[#E0FFFA]">
               <Table>

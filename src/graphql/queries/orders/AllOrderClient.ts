@@ -32,6 +32,12 @@ export const AllOrderClient_QUERY = gql`
         plan {
           id
           name
+          prices {
+            discount
+            id
+            key
+            value
+          }
         }
         pricePlans {
           discount
@@ -39,6 +45,7 @@ export const AllOrderClient_QUERY = gql`
           key
           value
         }
+        domainName
         renewalDate
         section
         status
