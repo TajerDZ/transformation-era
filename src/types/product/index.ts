@@ -19,6 +19,7 @@ export type ProductGraphql = {
     }[];
     prices: {
       discount: number;
+      duration: number;
       id: string;
       key: string;
       value: number;

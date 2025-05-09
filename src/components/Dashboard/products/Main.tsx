@@ -25,9 +25,11 @@ import { AllOrderClient_QUERY } from "@/graphql/queries/orders/AllOrderClient";
 import { useQuery } from "@apollo/client";
 import useStore from "@/store/useStore";
 import { formatDate } from "@/utils/formatters";
+import UpgradePlanDialog from "./hosting/upgrade/UpgradePlan";
 
 function Main() {
   const [isOpenRenewal, setIsOpenRenewal] = useState(false);
+  const [isOpenUpgrade, setIsOpenUpgrade] = useState(false);
   const [selectedItemRenewal, setSelectedItemRenewal] =
     useState<OrderGraphql | null>(null);
   const [itemsHosting_plan, setItemsHosting_plan] = useState<OrderGraphql[]>(
@@ -63,6 +65,24 @@ function Main() {
     setSelectedItemRenewal(item);
     setIsOpenRenewal(true);
   };
+
+  const handleUpgrade = (item: OrderGraphql) => {
+    setSelectedItemRenewal(item);
+    setIsOpenUpgrade(true);
+  };
+
+  const onEdit = (data: OrderGraphql) => {
+    setItemsHosting_plan((prev) =>
+      prev.map((item) => (item.id === data.id ? data : item))
+    );
+    setItemsDomains((prev) =>
+      prev.map((item) => (item.id === data.id ? data : item))
+    );
+    setItemsProducts_services((prev) =>
+      prev.map((item) => (item.id === data.id ? data : item))
+    );
+  };
+
   const context = useContext(SideBarContext);
   if (!context) {
     throw new Error("useSideBarContext must be used within a SideBarProvider");
@@ -136,7 +156,10 @@ function Main() {
                         >
                           {t("products.table.renewal")}
                         </Button>
-                        <Button className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1">
+                        <Button
+                          className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1"
+                          onClick={() => handleUpgrade(item)}
+                        >
                           {t("products.table.promotion")}
                         </Button>
                       </div>
@@ -275,7 +298,7 @@ function Main() {
                       {item.product.name}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
-                      {item.pricePlans.value} ريال
+                      {item.pricePlans?.value ?? 0} ريال
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {formatDate(item.renewalDate)}
@@ -321,6 +344,16 @@ function Main() {
           isOpen={isOpenRenewal}
           onOpen={setIsOpenRenewal}
           item={selectedItemRenewal}
+          onEdit={onEdit}
+        />
+      )}
+
+      {isOpenUpgrade && selectedItemRenewal && (
+        <UpgradePlanDialog
+          isOpen={isOpenUpgrade}
+          onOpen={setIsOpenUpgrade}
+          item={selectedItemRenewal}
+          onEdit={onEdit}
         />
       )}
     </div>

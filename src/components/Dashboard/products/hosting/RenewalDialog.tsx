@@ -19,18 +19,57 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { RenewOrder_Mutation } from "@/graphql/mutation/orders/RenewOrder";
+import useDynamicForm from "@/hooks/useDynamicForm";
 import { cn } from "@/lib/utils";
 import { OrderGraphql } from "@/types/orders";
+import { useMutation } from "@apollo/client";
 import { t } from "i18next";
+import { toast } from "sonner";
+import { addMonths, format } from "date-fns";
 import { useState } from "react";
 
 type PropsDialog = {
   isOpen: boolean;
   item: OrderGraphql;
   onOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onEdit: (data: OrderGraphql) => void;
 };
-function RenewalDialog({ isOpen, onOpen, item }: PropsDialog) {
-  const [selectPrice, setSelectPrice] = useState<string>("");
+function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
+  const [selectPrice, setSelectPrice] = useState<
+    OrderGraphql["pricePlans"] | null
+  >(null);
+  const { formState, handleInputChange, isChanged } = useDynamicForm<any>({
+    idOrder: item.id,
+    idPlan: item.plan.id,
+    idPrice: "",
+    dueDate: item.renewalDate,
+  });
+  const [renewOrder, { loading }] = useMutation(RenewOrder_Mutation);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isChanged || !loading) {
+      await renewOrder({
+        variables: {
+          idOrder: item.id,
+          idPrice: formState.idPrice,
+          dueDate: formState.dueDate,
+        },
+        onCompleted: ({ renewOrder: { data, status } }) => {
+          if (status) {
+            toast("Order created successfully", {
+              description: "Order created successfully",
+              descriptionClassName: "!text-muted-foreground",
+            });
+            onEdit(data);
+            onOpen(false);
+          }
+        },
+      });
+    } else {
+      console.log("Form is invalid");
+    }
+  };
   return (
     <Dialog
       open={isOpen}
@@ -56,136 +95,156 @@ function RenewalDialog({ isOpen, onOpen, item }: PropsDialog) {
             {t("products.dialog.renewal.description")}
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
-          <div>
-            <Card className="p-0 max-md:p-0 shadow-none rounded-md">
-              <Table>
-                <TableHeader className="divide-x border-b">
-                  <TableHead className="text-center w-1/2 text-muted-foreground">
-                    {t("products.dialog.renewal.subscription_number")}
-                  </TableHead>
-                  <TableHead className="text-center w-1/2 text-muted-foreground">
-                    {t("products.dialog.renewal.service")}
-                  </TableHead>
-                </TableHeader>
-                <TableBody>
-                  <TableRow className="divide-x">
-                    <TableCell className="text-center text-secondary-1">
-                      {item?.id}
-                    </TableCell>
-                    <TableCell className="text-center text-secondary-1">
-                      {item?.product?.name}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Card>
-          </div>
-          <div className="space-y-2">
-            {item?.plan.prices.map((price) => (
-              <Card
-                className={cn(
-                  "p-2 max-md:p-2 shadow-none flex-row justify-between rounded-md hover:bg-primary-1/10 cursor-pointer",
-                  selectPrice == price.id && "border-primary-2"
-                )}
-                onClick={() => setSelectPrice(price.id)}
-                key={price.id}
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    className={cn(
-                      "border border-gray-300 h-5 w-5 flex justify-center items-center rounded-full",
-                      selectPrice == price.id && "border-primary-2"
-                    )}
-                  >
-                    {selectPrice == price.id && (
-                      <span className="bg-primary-2 w-3 h-3 block rounded-full" />
-                    )}
-                  </span>
-                  <p>{price.key}</p>
-                </div>
-                <Badge className="text-[10px] bg-primary-1">
-                  {price.value} ريال
-                </Badge>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-4">
+            <div>
+              <Card className="p-0 max-md:p-0 shadow-none rounded-md">
+                <Table>
+                  <TableHeader className="divide-x border-b">
+                    <TableHead className="text-center w-1/2 text-muted-foreground">
+                      {t("products.dialog.renewal.subscription_number")}
+                    </TableHead>
+                    <TableHead className="text-center w-1/2 text-muted-foreground">
+                      {t("products.dialog.renewal.service")}
+                    </TableHead>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow className="divide-x">
+                      <TableCell className="text-center text-secondary-1">
+                        {item?.id}
+                      </TableCell>
+                      <TableCell className="text-center text-secondary-1">
+                        {item?.product?.name}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
               </Card>
-            ))}
-          </div>
-          {/* <div className="space-y-2">
-            <Label className="text-muted-foreground">
-              {t("products.dialog.renewal.code_lable")}
-            </Label>
-            <div className="relative">
-              <Input placeholder="Enter the code" className="pe-14" />
-              <div className="flex absolute top-1/2 -translate-y-1/2 end-2 items-center gap-2">
-                <Separator
-                  orientation="vertical"
-                  className="!w-[2px] !h-6 bg-muted-foreground/30"
-                />
-                <p className="text-primary-1 text-sm cursor-pointer">
-                  {t("status_item.active")}
-                </p>
-              </div>
             </div>
-          </div> */}
-          <div className="">
-            <Card className="p-0 max-md:p-0 shadow-none rounded-md flex-row justify-between bg-[#E0FFFA]">
-              <Table>
-                <TableBody>
-                  <TableRow className="border-b-0">
-                    <TableCell className="text-start text-muted-foreground w-1/2">
-                      {t("products.dialog.renewal.expiration_date")}
-                    </TableCell>
-                    <TableCell className="text-end text-secondary-1 w-1/2">
-                      2026-04-04
-                    </TableCell>
-                  </TableRow>
-                  <TableRow className="border-b-0">
-                    <TableCell className="text-start text-muted-foreground w-1/2">
-                      {t("products.dialog.renewal.subtotal")}
-                    </TableCell>
-                    <TableCell className="text-end text-secondary-1 w-1/2">
-                      4500 ريال
-                    </TableCell>
-                  </TableRow>
-                  <TableRow className="border-b-0">
-                    <TableCell className="text-start text-muted-foreground w-1/2">
-                      {t("products.dialog.renewal.discount")}
-                    </TableCell>
-                    <TableCell className="text-end text-secondary-1 w-1/2">
-                      0.000 ر.ع
-                    </TableCell>
-                  </TableRow>
-                  <TableRow className="">
-                    <TableCell className="text-start text-muted-foreground w-1/2">
-                      {t("products.dialog.renewal.tax")}
-                    </TableCell>
-                    <TableCell className="text-end text-secondary-1 w-1/2">
-                      15.00 ر.ع
-                    </TableCell>
-                  </TableRow>
-                  <TableRow className="border-b-0">
-                    <TableCell className="text-start text-secondary-1 w-1/2">
-                      {t("products.dialog.renewal.total")}
-                    </TableCell>
-                    <TableCell className="text-end text-secondary-1 w-1/2">
-                      175.5 ر.ع
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Card>
+            <div className="space-y-2">
+              {item?.plan.prices.map((price) => (
+                <Card
+                  className={cn(
+                    "p-2 max-md:p-2 shadow-none flex-row justify-between rounded-md hover:bg-primary-1/10 cursor-pointer",
+                    formState.idPrice == price.id && "border-primary-2"
+                  )}
+                  onClick={() => {
+                    handleInputChange("idPrice", price.id);
+                    setSelectPrice(price);
+                    if (new Date(item.renewalDate) > new Date()) {
+                      handleInputChange(
+                        "dueDate",
+                        addMonths(new Date(item.renewalDate), price.duration)
+                      );
+                    } else {
+                      handleInputChange(
+                        "dueDate",
+                        addMonths(new Date(), price.duration)
+                      );
+                    }
+                  }}
+                  key={price.id}
+                >
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={cn(
+                        "border border-gray-300 h-5 w-5 flex justify-center items-center rounded-full",
+                        formState.idPrice == price.id && "border-primary-2"
+                      )}
+                    >
+                      {formState.idPrice == price.id && (
+                        <span className="bg-primary-2 w-3 h-3 block rounded-full" />
+                      )}
+                    </span>
+                    <p>{price.key}</p>
+                  </div>
+                  <Badge className="text-[10px] bg-primary-1">
+                    {price.value} ريال
+                  </Badge>
+                </Card>
+              ))}
+            </div>
+
+            <div className="">
+              <Card className="p-0 max-md:p-0 shadow-none rounded-md flex-row justify-between bg-[#E0FFFA]">
+                <Table>
+                  <TableBody>
+                    <TableRow className="border-b-0">
+                      <TableCell className="text-start text-muted-foreground w-1/2">
+                        {t("products.dialog.renewal.expiration_date")}
+                      </TableCell>
+                      <TableCell className="text-end text-secondary-1 w-1/2">
+                        {format(formState.dueDate, "dd-MM-yyyy")}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow className="border-b-0">
+                      <TableCell className="text-start text-muted-foreground w-1/2">
+                        {t("products.dialog.renewal.subtotal")}
+                      </TableCell>
+                      <TableCell className="text-end text-secondary-1 w-1/2">
+                        {selectPrice ? selectPrice.value : "-"} ر.ع
+                      </TableCell>
+                    </TableRow>
+                    <TableRow className="border-b-0">
+                      <TableCell className="text-start text-muted-foreground w-1/2">
+                        {t("products.dialog.renewal.discount")}
+                      </TableCell>
+                      <TableCell className="text-end text-secondary-1 w-1/2">
+                        {selectPrice
+                          ? (selectPrice.discount * selectPrice.value) / 100
+                          : "-"}{" "}
+                        ر.ع
+                      </TableCell>
+                    </TableRow>
+                    <TableRow className="">
+                      <TableCell className="text-start text-muted-foreground w-1/2">
+                        {t("products.dialog.renewal.tax")}
+                      </TableCell>
+                      <TableCell className="text-end text-secondary-1 w-1/2">
+                        {selectPrice ? (15 * selectPrice.value) / 100 : "-"} ر.ع
+                      </TableCell>
+                    </TableRow>
+                    <TableRow className="border-b-0">
+                      <TableCell className="text-start text-secondary-1 w-1/2">
+                        {t("products.dialog.renewal.total")}
+                      </TableCell>
+                      <TableCell className="text-end text-secondary-1 w-1/2">
+                        {selectPrice
+                          ? selectPrice.value -
+                            (selectPrice.discount * selectPrice.value) / 100 +
+                            (15 * selectPrice.value) / 100
+                          : "-"}{" "}
+                        ر.ع
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Card>
+            </div>
           </div>
-        </div>
-        <DialogFooter>
-          <div className="flex items-center gap-2 w-full">
-            <Button className="bg-button rounded-full w-1/2">
-              {t("products.dialog.renewal.save")}
-            </Button>
-            <Button variant="outline" className=" rounded-full w-1/2">
-              {t("products.dialog.renewal.cancel")}
-            </Button>
-          </div>
-        </DialogFooter>
+          <DialogFooter>
+            <div className="flex items-center gap-2 w-full">
+              <Button
+                type="submit"
+                onClick={() => {
+                  handleSubmit;
+                }}
+                className="bg-button rounded-full w-1/2"
+                disabled={loading || !isChanged}
+              >
+                {t("products.dialog.renewal.save")}
+                {loading && <span className="ml-2 animate-spin">⏳</span>}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className=" rounded-full w-1/2"
+              >
+                {t("products.dialog.renewal.cancel")}
+              </Button>
+            </div>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

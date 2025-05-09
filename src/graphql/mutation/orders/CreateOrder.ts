@@ -11,6 +11,7 @@ export const CreateOrder_Mutation = gql`
       section
       status
       updatedAt
+      domainName
       timeLine {
         id
         createdAt

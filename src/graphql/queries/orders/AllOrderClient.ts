@@ -20,6 +20,7 @@ export const AllOrderClient_QUERY = gql`
               id
               key
               value
+              duration
             }
             details {
               id
@@ -37,6 +38,7 @@ export const AllOrderClient_QUERY = gql`
             id
             key
             value
+            duration
           }
         }
         pricePlans {
@@ -44,6 +46,7 @@ export const AllOrderClient_QUERY = gql`
           id
           key
           value
+          duration
         }
         domainName
         renewalDate

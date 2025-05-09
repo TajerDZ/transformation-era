@@ -14,6 +14,7 @@ export type OrderGraphql = {
   type: string;
   domainName: string;
   pricePlans: {
+    duration: number;
     id: string;
     key: string;
     value: number;
