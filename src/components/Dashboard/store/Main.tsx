@@ -40,26 +40,38 @@ function Main() {
           }}
         />
       </div>
-      <div className="grid grid-cols-3 max-sm:grid-cols-1 max-md:grid-cols-2 gap-4 ">
-        {items.map((item) => (
-          <Card className="shadow-none rounded-lg p-2 max-md:p-2" key={item.id}>
-            <div className="space-y-4 flex flex-col h-full">
-              <div className="border rounded-lg p-2 flex items-center justify-center">
-                <img src={item.thumbnail} alt="" className="h-36" />
+      {items.length > 0 ? (
+        <div className="grid grid-cols-3 max-sm:grid-cols-1 max-md:grid-cols-2 gap-4 ">
+          {items.map((item) => (
+            <Card
+              className="shadow-none rounded-lg p-2 max-md:p-2"
+              key={item.id}
+            >
+              <div className="space-y-4 flex flex-col h-full">
+                <div className="border rounded-lg p-2 flex items-center justify-center">
+                  <img src={item.thumbnail} alt="" className="h-36" />
+                </div>
+                <div className="space-y-2 flex flex-col justify-between flex-1">
+                  <h1 className="text-lg font-bold  ">{item.name}</h1>
+                  <p className="text-sm  text-gray-500 ">{item.description}</p>
+                  <Button className="bg-button w-full rounded-full" asChild>
+                    <Link to={item.id ? `/dashboard/store/${item.id}` : "#"}>
+                      {t("store.explore_now")}
+                    </Link>
+                  </Button>
+                </div>
               </div>
-              <div className="space-y-2 flex flex-col justify-between flex-1">
-                <h1 className="text-lg font-bold  ">{item.name}</h1>
-                <p className="text-sm  text-gray-500 ">{item.description}</p>
-                <Button className="bg-button w-full rounded-full" asChild>
-                  <Link to={item.id ? `/dashboard/store/${item.id}` : "#"}>
-                    {t("store.explore_now")}
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col justify-center items-center gap-5 h-64">
+          <img src="/emptyData.svg" alt="" className="w-20" />
+          <h1 className="text-muted-foreground">
+            {t("No data available in the table")}
+          </h1>
+        </div>
+      )}
     </div>
   );
 }
