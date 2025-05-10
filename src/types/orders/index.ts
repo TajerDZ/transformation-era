@@ -34,3 +34,21 @@ export type OrderInput = {
   section: string;
   status: string;
 };
+
+export type InvoiceGraphql = {
+  type: string;
+  price: number;
+  duration: number;
+  totalDiscount: number;
+  totalPrice: number;
+  subTotalPrice: number;
+  tva: number;
+  dueDate: string;
+  status: string;
+  order: {
+    id: string;
+    product: {
+      name: string;
+    };
+  };
+};

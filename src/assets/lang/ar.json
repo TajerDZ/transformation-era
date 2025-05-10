@@ -91,6 +91,7 @@
   "details": "التفاصيل",
   "status": "الحالة",
   "back": "الرجوع",
+  "loading...": "جارٍ التحميل...",
   "home": {
     "title": "لوحة التحكم",
     "welcome": {
@@ -258,6 +259,7 @@
     "clear_filter": "مسح الفلتر",
     "search_button": "إجراء التصفية",
     "search_cancel": "إلغاء",
+    "service_placeholder": "اختر الخدمة",
     "table": {
       "bill_number": "رقم الفاتورة",
       "bill_date": "تاريخ الفاتورة",

@@ -1,25 +1,63 @@
-import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { SideBarContext } from "@/hooks/SideBarContext";
 import { cn } from "@/lib/utils";
 import { t } from "i18next";
-import { useContext } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import { useContext, useState } from "react";
+
 import AutocompleteFilter from "./ActionHeader/AutocompleteFilter";
+import TableContent from "./TableContent";
+import { InvoiceGraphql } from "@/types/orders";
+import { useQuery } from "@apollo/client";
+import { AllInvoice_QUERY } from "@/graphql/queries/orders/AllInvoice";
 function Main() {
+  const [selectedItem, setSelectedItem] = useState<InvoiceGraphql | null>(null);
+  const [items, setItems] = useState<InvoiceGraphql[]>([]);
+  const [page, setPage] = useState(1);
+  const [countItems, setCountItems] = useState(0);
+  const limit = 10;
+  const [filter, setFilter] = useState<any[]>([]);
+  const { loading } = useQuery(AllInvoice_QUERY, {
+    fetchPolicy: "network-only",
+    variables: {
+      filter: filter,
+      pagination: {
+        page: page,
+        limit: limit,
+      },
+    },
+    onCompleted: ({ allInvoice: { data, total } }) => {
+      setItems(data);
+      setCountItems(total);
+    },
+  });
   const context = useContext(SideBarContext);
   if (!context) {
     throw new Error("useSideBarContext must be used within a SideBarProvider");
   }
   const { open } = context;
+
+  const handelNextPage = () => {
+    if (page < Math.ceil(countItems / limit)) {
+      setPage(page + 1);
+    }
+  };
+  const handelPrevPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+  const handleEdit = (item: InvoiceGraphql) => {
+    setSelectedItem(item);
+    console.log(selectedItem);
+  };
+  const handleDelete = (item: InvoiceGraphql) => {
+    setSelectedItem(item);
+  };
+
+  const handleDetails = (item: InvoiceGraphql) => {
+    setSelectedItem(item);
+  };
+
   return (
     <div className="space-y-5">
       <div className="space-y-3">
@@ -37,58 +75,19 @@ function Main() {
         />
       </div>
       <div className="space-y-3">
-        <AutocompleteFilter />
-        <Card
-          className={cn(
-            "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300 max-sm:!w-full",
-            open && "max-lg:!w-[100%]"
-          )}
-          style={{
-            boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
-            overflowX: "auto",
-            width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
-          }}
-        >
-          <Table className="border border-x-0 border-b-0">
-            <TableHeader className="border-b  ">
-              <TableHead className="text-muted-foreground text-center">
-                {t("bills.table.bill_number")}
-              </TableHead>
-              <TableHead className="text-muted-foreground text-center">
-                {t("bills.table.bill_date")}
-              </TableHead>
-              <TableHead className="text-muted-foreground text-center">
-                {t("bills.table.service")}
-              </TableHead>
-              <TableHead className="text-muted-foreground text-center">
-                {t("bills.table.due_date")}
-              </TableHead>
-              <TableHead className="text-muted-foreground text-center">
-                {t("bills.table.bill_amount")}
-              </TableHead>
-              <TableHead className="text-muted-foreground text-center"></TableHead>
-            </TableHeader>
-            <TableBody>
-              {Array.from({ length: 10 }, (_, index) => (
-                <TableRow key={index}>
-                  <TableCell className="text-center">INV-20250401</TableCell>
-                  <TableCell className="text-center">01-04-2025</TableCell>
-                  <TableCell className="text-center">
-                    استضافة مشتركة - سنة
-                  </TableCell>
-                  <TableCell className="text-center">01-04-2026</TableCell>
-                  <TableCell className="text-center">4500 ريال</TableCell>
-                  <TableCell className="text-center">
-                    <Button variant="secondary" className="text-primary-2">
-                      {t("bills.table.edit_bill")}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div className="flex items-center justify-between p-4"></div>
-        </Card>
+        <AutocompleteFilter setFilter={setFilter} />
+        <TableContent
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          handleDetails={handleDetails}
+          items={items}
+          loading={loading}
+          handelNextPage={handelNextPage}
+          handelPrevPage={handelPrevPage}
+          countItems={countItems}
+          page={page}
+          limit={limit}
+        />
       </div>
     </div>
   );

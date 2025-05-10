@@ -14,9 +14,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AllProduct_QUERY } from "@/graphql/queries/products/AllProduct";
+import { ProductGraphql } from "@/types/product";
+import { useLazyQuery } from "@apollo/client";
 import { dir, t } from "i18next";
+import { useEffect, useState } from "react";
+type Props = {
+  setFilter: React.Dispatch<React.SetStateAction<any[]>>;
+};
+function AutocompleteFilter({ setFilter }: Props) {
+  const [product, setProduct] = useState<string | null>(null);
+  const [price, setPrice] = useState<string | null>(null);
+  const [products, setProducts] = useState<ProductGraphql[]>([]);
+  const [fetchProducts, { loading: loadingProduct }] = useLazyQuery(
+    AllProduct_QUERY,
 
-function AutocompleteFilter() {
+    {
+      fetchPolicy: "network-only",
+      onCompleted: ({ allProduct: { data } }) => {
+        setProducts(data);
+      },
+    }
+  );
+
+  useEffect(() => {
+    const filter = [
+      ...(price
+        ? [{ field: "totalPrice", operator: "$eq", value: price }]
+        : []),
+      ...(product
+        ? [{ field: "order.idProduct", operator: "$eq", value: product }]
+        : []),
+    ];
+    if (filter) {
+      setFilter(filter);
+    }
+  }, [product, price]);
   return (
     <div className="flex items-center gap-2 max-sm:flex-col max-sm:items-start">
       <div>
@@ -34,28 +67,37 @@ function AutocompleteFilter() {
             <div className="space-y-4">
               <h1 className="font-bold">{t("bills.filter_results")}</h1>
               <div className="space-y-4 ">
-                <div className="space-y-2">
+                <div className="space-y-2 col-span-2">
                   <Label>{t("bills.table.service")}</Label>
-                  <Select dir={dir()}>
-                    <SelectTrigger className="bg-input w-full border-">
-                      <SelectValue placeholder={t("bills.table.service")} />
+                  <Select
+                    dir={dir()}
+                    value={product || ""}
+                    onValueChange={(value) => {
+                      setProduct(value);
+                    }}
+                    onOpenChange={(open) => {
+                      if (open) {
+                        fetchProducts();
+                      }
+                    }}
+                  >
+                    <SelectTrigger className="bg-input w-full border- !py-5">
+                      <SelectValue
+                        placeholder={t("bills.service_placeholder")}
+                      />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="clear" disabled>
-                        {t("bills.clear_filter")}
-                      </SelectItem>
-                      <SelectItem value="service1">
-                        استضافة مشتركة - سنة
-                      </SelectItem>
-                      <SelectItem value="service2">
-                        استضافة مشتركة - 6 شهور
-                      </SelectItem>
-                      <SelectItem value="service3">
-                        استضافة مشتركة - 3 شهور
-                      </SelectItem>
-                      <SelectItem value="service4">
-                        استضافة مشتركة - شهر
-                      </SelectItem>
+                      {products.length > 0 ? (
+                        products.map((item) => (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))
+                      ) : loadingProduct ? (
+                        <SelectItem key="loading" value="0" disabled>
+                          {t("loading...")}
+                        </SelectItem>
+                      ) : null}
                     </SelectContent>
                   </Select>
                 </div>
@@ -68,14 +110,16 @@ function AutocompleteFilter() {
                   />
                 </div>
                 <div className="flex items-center  gap-2">
-                  <Button className="bg-button rounded-full w-1/2">
-                    {t("bills.search_button")}
-                  </Button>
                   <Button
                     variant="outline"
-                    className="text-primary-2 border-primary-2 rounded-full w-1/2"
+                    className="text-primary-2 border-primary-2 rounded-full w-full"
+                    onClick={() => {
+                      setProduct(null);
+                      setPrice(null);
+                      setFilter([]);
+                    }}
                   >
-                    {t("bills.search_cancel")}
+                    {t("bills.clear_filter")}
                   </Button>
                 </div>
               </div>
@@ -88,6 +132,10 @@ function AutocompleteFilter() {
           type="text"
           placeholder="بحث"
           className="max-w-sm bg-card ps-10 rounded-full w-[400px] max-sm:w-[300px]"
+          onChange={(e) => {
+            setPrice(e.target.value);
+          }}
+          value={price || ""}
         />
         <span className="absolute top-1/2 start-3 transform -translate-y-1/2">
           <Icon name="Search" size={16} />
