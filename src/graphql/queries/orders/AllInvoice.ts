@@ -13,6 +13,9 @@ export const AllInvoice_QUERY = gql`
         tva
         dueDate
         status
+        numberInvoice
+        createdAt
+        id
         order {
           id
           product {

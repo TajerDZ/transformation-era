@@ -45,6 +45,9 @@ export type InvoiceGraphql = {
   tva: number;
   dueDate: string;
   status: string;
+  numberInvoice: string;
+  createdAt: string;
+  id: string;
   order: {
     id: string;
     product: {

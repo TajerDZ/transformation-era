@@ -23,6 +23,7 @@ type Props = {
   setFilter: React.Dispatch<React.SetStateAction<any[]>>;
 };
 function AutocompleteFilter({ setFilter }: Props) {
+  const [search, setSearch] = useState<string>();
   const [product, setProduct] = useState<string | null>(null);
   const [price, setPrice] = useState<string | null>(null);
   const [products, setProducts] = useState<ProductGraphql[]>([]);
@@ -43,13 +44,16 @@ function AutocompleteFilter({ setFilter }: Props) {
         ? [{ field: "totalPrice", operator: "$eq", value: price }]
         : []),
       ...(product
-        ? [{ field: "order.idProduct", operator: "$eq", value: product }]
+        ? [{ field: "idProduct", operator: "$eq", value: product }]
+        : []),
+      ...(search
+        ? [{ field: "numberInvoice", operator: "$eq", value: search }]
         : []),
     ];
     if (filter) {
       setFilter(filter);
     }
-  }, [product, price]);
+  }, [product, price, search]);
   return (
     <div className="flex items-center gap-2 max-sm:flex-col max-sm:items-start">
       <div>
@@ -107,6 +111,10 @@ function AutocompleteFilter({ setFilter }: Props) {
                     type="text"
                     placeholder={t("bills.table.bill_amount")}
                     className="bg-input"
+                    onChange={(e) => {
+                      setPrice(e.target.value);
+                    }}
+                    value={price || ""}
                   />
                 </div>
                 <div className="flex items-center  gap-2">
@@ -133,9 +141,9 @@ function AutocompleteFilter({ setFilter }: Props) {
           placeholder="بحث"
           className="max-w-sm bg-card ps-10 rounded-full w-[400px] max-sm:w-[300px]"
           onChange={(e) => {
-            setPrice(e.target.value);
+            setSearch(e.target.value);
           }}
-          value={price || ""}
+          value={search}
         />
         <span className="absolute top-1/2 start-3 transform -translate-y-1/2">
           <Icon name="Search" size={16} />

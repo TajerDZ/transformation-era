@@ -78,8 +78,12 @@ function TableContent({
             {items.length > 0 ? (
               items.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell className="text-center">{item.order.id}</TableCell>
-                  <TableCell className="text-center">01-04-2025</TableCell>
+                  <TableCell className="text-center">
+                    #{item.numberInvoice}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {format(item.createdAt, "dd-MM-yyyy")}
+                  </TableCell>
                   <TableCell className="text-center">
                     {item.order.product.name}
                   </TableCell>
