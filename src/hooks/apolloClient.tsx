@@ -33,7 +33,7 @@ const authLink = setContext((_, { headers, operationName }) => {
 // );
 
 const httpLink = createUploadLink({
-  uri: `https://po4g80wsgo0o88swk8sscw0g.coolify.bi3li.cloud/graphql`,
+  uri: `https://api.assar.sa/graphql`,
   credentials: "include",
 });
 
