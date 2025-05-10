@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { SideBarContext } from "@/hooks/SideBarContext";
@@ -9,12 +9,14 @@ import Header from "@/components/Dashboard/header/Header";
 import SideBar from "@/components/Dashboard/sidebar/SideBar";
 import { cn } from "@/lib/utils";
 import SideBarMobile from "@/components/Dashboard/sidebar/SideBarMobile";
+import useStore from "@/store/useStore";
 // import { toast } from "@/hooks/use-toast";
 // import { t } from "i18next";
 
 function Layout() {
   const [open, setOpen] = useState(false);
-
+  const isAuth = useStore((state: any) => state.isAuth);
+  const navigate = useNavigate();
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 1024) {
@@ -48,6 +50,16 @@ function Layout() {
   //   );
   // }
 
+  useEffect(() => {
+    if (!isAuth) {
+      // toast({
+      //   title: t("toast.error"),
+      //   description: t("toast.unauthorized"),
+      //   variant: "destructive",
+      // });
+      navigate("/");
+    }
+  }, [isAuth]);
   return (
     <SideBarContext.Provider value={{ open, setOpen }}>
       <div>

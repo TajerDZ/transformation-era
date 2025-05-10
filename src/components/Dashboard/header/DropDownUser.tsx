@@ -15,11 +15,12 @@ import { useNavigate } from "react-router-dom";
 
 function DropDownUser() {
   const user = useStore((state: any) => state.userData);
+  const logout = useStore((state: any) => state.logout);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     // Perform logout logic here
-    navigate("/");
+    logout();
   };
   return (
     <DropdownMenu dir={dir()}>
