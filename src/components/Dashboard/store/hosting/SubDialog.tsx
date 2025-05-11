@@ -11,15 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import Icon from "@/components/ui/Icon";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { RenewOrder_Mutation } from "@/graphql/mutation/orders/RenewOrder";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import useDynamicForm from "@/hooks/useDynamicForm";
 import { cn } from "@/lib/utils";
 import { OrderGraphql } from "@/types/orders";
@@ -28,40 +20,42 @@ import { t } from "i18next";
 import { toast } from "sonner";
 import { addMonths, format } from "date-fns";
 import { useState } from "react";
+import { ProductGraphql } from "@/types/product";
+import { CreateOrderClient_Mutation } from "@/graphql/mutation/orders/CreateOrderClient";
 
 type PropsDialog = {
   isOpen: boolean;
-  item: OrderGraphql;
+  item: ProductGraphql["plans"][0];
+  idProduct: string;
   onOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onEdit: (data: OrderGraphql) => void;
 };
-function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
+function SubDialog({ isOpen, onOpen, item, idProduct }: PropsDialog) {
   const [selectPrice, setSelectPrice] = useState<
     OrderGraphql["pricePlans"] | null
   >(null);
   const { formState, handleInputChange, isChanged } = useDynamicForm<any>({
-    idOrder: item.id,
-    idPlan: item.plan.id,
     idPrice: "",
-    dueDate: item.renewalDate,
+    dueDate: "",
   });
-  const [renewOrder, { loading }] = useMutation(RenewOrder_Mutation);
+  const [createOrder, { loading }] = useMutation(CreateOrderClient_Mutation);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isChanged || !loading) {
-      await renewOrder({
+      await createOrder({
         variables: {
-          idOrder: item.id,
-          idPrice: formState.idPrice,
-          dueDate: formState.dueDate,
+          content: {
+            idPlan: item.id,
+            idPrice: formState.idPrice,
+            idProduct: idProduct,
+            renewalDate: formState.dueDate,
+          },
         },
-        onCompleted: ({ renewOrder: { data, status } }) => {
-          if (status) {
+        onCompleted: ({ createOrderClient: data }) => {
+          if (data) {
             toast("Order created successfully", {
               description: "Order created successfully",
               descriptionClassName: "!text-muted-foreground",
             });
-            onEdit(data);
             onOpen(false);
           }
         },
@@ -87,42 +81,18 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
         <DialogHeader>
           <DialogTitle>
             <p className="text-secondary-2">
-              {t("products.dialog.renewal.title")} -{" "}
-              <span className="font-normal">notchpal.com</span>
+              {t("products.dialog.subscribe.title")} -{" "}
+              <span className="font-normal">{item.name}</span>
             </p>
           </DialogTitle>
           <DialogDescription>
-            {t("products.dialog.renewal.description")}
+            {t("products.dialog.subscribe.description")}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-4">
-            <div>
-              <Card className="p-0 max-md:p-0 shadow-none rounded-md">
-                <Table>
-                  <TableHeader className="divide-x border-b">
-                    <TableHead className="text-center w-1/2 text-muted-foreground">
-                      {t("products.dialog.renewal.subscription_number")}
-                    </TableHead>
-                    <TableHead className="text-center w-1/2 text-muted-foreground">
-                      {t("products.dialog.renewal.service")}
-                    </TableHead>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow className="divide-x">
-                      <TableCell className="text-center text-secondary-1">
-                        {item?.id}
-                      </TableCell>
-                      <TableCell className="text-center text-secondary-1">
-                        {item?.product?.name}
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </Card>
-            </div>
             <div className="space-y-2">
-              {item?.plan.prices.map((price) => (
+              {item.prices.map((price) => (
                 <Card
                   className={cn(
                     "p-2 max-md:p-2 shadow-none flex-row justify-between rounded-md hover:bg-primary-1/10 cursor-pointer",
@@ -131,17 +101,10 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                   onClick={() => {
                     handleInputChange("idPrice", price.id);
                     setSelectPrice(price);
-                    if (new Date(item.renewalDate) > new Date()) {
-                      handleInputChange(
-                        "dueDate",
-                        addMonths(new Date(item.renewalDate), price.duration)
-                      );
-                    } else {
-                      handleInputChange(
-                        "dueDate",
-                        addMonths(new Date(), price.duration)
-                      );
-                    }
+                    handleInputChange(
+                      "dueDate",
+                      addMonths(new Date(), price.duration)
+                    );
                   }}
                   key={price.id}
                 >
@@ -252,4 +215,4 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
   );
 }
 
-export default RenewalDialog;
+export default SubDialog;

@@ -16,25 +16,25 @@ export const UpgradeOrder_Mutation = gql`
         domainName
         timeLine {
           id
+          type
           createdAt
-          oldPlan {
+          status
+          price
+          duration
+          renewalDate
+          plan {
             id
             name
           }
-          oldPrice {
+          pricePlan {
             id
             key
             value
             discount
+            duration
           }
-          oldProduct {
-            id
-            name
-            price
-          }
-          status
-          type
         }
+        updated
         product {
           name
           id

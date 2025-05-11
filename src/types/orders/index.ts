@@ -11,18 +11,38 @@ export type OrderGraphql = {
   product: ProductGraphql;
   user: UserGraphql;
   price: number;
-  type: string;
   domainName: string;
   pricePlans: {
-    duration: number;
     id: string;
     key: string;
     value: number;
     discount: number;
+    duration: number;
   };
   plan: ProductGraphql["plans"][0];
   renewalDate: string;
   status: string;
+  timeLine: {
+    id: string;
+    type: string;
+    createdAt: string;
+    status: string;
+    price: number;
+    duration: number;
+    renewalDate: string;
+    plan: {
+      id: string;
+      name: string;
+    };
+    pricePlan: {
+      id: string;
+      key: string;
+      value: number;
+      discount: number;
+      duration: number;
+    };
+  }[];
+  updated: boolean;
 };
 
 export type OrderInput = {

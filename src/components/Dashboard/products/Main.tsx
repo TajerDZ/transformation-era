@@ -149,20 +149,24 @@ function Main() {
                       {formatDate(item.renewalDate)}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
-                      <div className="flex items-center justify-center gap-2">
-                        <Button
-                          className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
-                          onClick={() => handleRenewal(item)}
-                        >
-                          {t("products.table.renewal")}
-                        </Button>
-                        <Button
-                          className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1"
-                          onClick={() => handleUpgrade(item)}
-                        >
-                          {t("products.table.promotion")}
-                        </Button>
-                      </div>
+                      {!item.updated ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <Button
+                            className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
+                            onClick={() => handleRenewal(item)}
+                          >
+                            {t("products.table.renewal")}
+                          </Button>
+                          <Button
+                            className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1"
+                            onClick={() => handleUpgrade(item)}
+                          >
+                            {t("products.table.promotion")}
+                          </Button>
+                        </div>
+                      ) : (
+                        <span>-</span>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))

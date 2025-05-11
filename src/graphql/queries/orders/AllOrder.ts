@@ -13,30 +13,32 @@ export const AllOrder_QUERY = gql`
         section
         status
         updatedAt
+        domainName
         timeLine {
           id
+          type
           createdAt
-          oldPlan {
+          status
+          price
+          duration
+          renewalDate
+          plan {
             id
             name
           }
-          oldPrice {
+          pricePlan {
             id
             key
             value
             discount
+            duration
           }
-          oldProduct {
-            id
-            name
-            price
-          }
-          status
-          type
         }
+        updated
         product {
           name
           id
+          type
           plans {
             id
             name
@@ -50,6 +52,7 @@ export const AllOrder_QUERY = gql`
               id
               key
               value
+              duration
             }
           }
         }
@@ -61,6 +64,7 @@ export const AllOrder_QUERY = gql`
             key
             value
             discount
+            duration
           }
         }
         price
@@ -69,6 +73,7 @@ export const AllOrder_QUERY = gql`
           id
           key
           value
+          duration
         }
         user {
           email

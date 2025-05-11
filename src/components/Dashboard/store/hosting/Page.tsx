@@ -10,10 +10,15 @@ import { ProductGraphql } from "@/types/product";
 import { useQuery } from "@apollo/client";
 import { Product_QUERY } from "@/graphql/queries/products/Product";
 import { useParams } from "react-router-dom";
+import SubDialog from "./SubDialog";
 
 function Page() {
   const { idProduct } = useParams();
   const [item, setItem] = useState<ProductGraphql>();
+  const [isOpenSub, setIsOpenSub] = useState(false);
+  const [selectPlan, setSelectPlan] = useState<
+    ProductGraphql["plans"][0] | null
+  >(null);
 
   /*const { loading } =*/ useQuery(Product_QUERY, {
     fetchPolicy: "network-only",
@@ -29,6 +34,11 @@ function Page() {
     throw new Error("useSideBarContext must be used within a SideBarProvider");
   }
   const { open } = context;
+
+  const handleSelectPlan = (plan: ProductGraphql["plans"][0]) => {
+    setSelectPlan(plan);
+    setIsOpenSub(true);
+  };
   return (
     <div className="space-y-5">
       <div className="space-y-3">
@@ -83,6 +93,7 @@ function Page() {
               <Button
                 variant="outline"
                 className="border-secondary-2 text-secondary-2 bg-transparent hover:bg-secondary-2 hover:text-white transition-all duration-200 ease-in-out w-full rounded-full"
+                onClick={() => handleSelectPlan(plan)}
               >
                 {t("store.hosting.subscribe_now")}{" "}
               </Button>
@@ -90,6 +101,14 @@ function Page() {
           </Card>
         ))}
       </div>
+      {isOpenSub && selectPlan && item && (
+        <SubDialog
+          item={selectPlan}
+          isOpen={isOpenSub}
+          onOpen={setIsOpenSub}
+          idProduct={item?.id}
+        />
+      )}
     </div>
   );
 }

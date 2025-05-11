@@ -4,6 +4,7 @@ export const AllOrderClient_QUERY = gql`
   query AllOrderClient($idUser: ID) {
     allOrderClient(idUser: $idUser) {
       data {
+        updated
         product {
           id
           name

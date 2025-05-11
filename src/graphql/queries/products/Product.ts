@@ -26,6 +26,7 @@ export const Product_QUERY = gql`
           id
           key
           value
+          duration
         }
       }
     }

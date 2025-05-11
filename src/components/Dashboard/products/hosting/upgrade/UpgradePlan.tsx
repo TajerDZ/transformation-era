@@ -244,7 +244,9 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                               {t("products.dialog.renewal.expiration_date")}
                             </TableCell>
                             <TableCell className="text-end text-secondary-1 w-1/2">
-                              {format(formState.dueDate, "dd-MM-yyyy")}
+                              {formState.dueDate
+                                ? format(formState.dueDate, "dd-MM-yyyy")
+                                : "-"}
                             </TableCell>
                           </TableRow>
                           <TableRow className="border-b-0">

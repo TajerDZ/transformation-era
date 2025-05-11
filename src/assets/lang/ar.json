@@ -159,6 +159,16 @@
         "price&duration": "السعر والمدة",
         "price&duration_placeholder": "اختر السعر والمدة",
         "plan_placeholder": "اختر الخطة"
+      },
+      "subscribe": {
+        "title": "اشتراك جديد",
+        "description": "راجع الفاتورة المحددة وتابع عملية الدفع.",
+        "save": "حفظ التغييرات",
+        "cancel": "إلغاء",
+        "plan": "الخطة",
+        "price&duration": "السعر والمدة",
+        "price&duration_placeholder": "اختر السعر والمدة",
+        "plan_placeholder": "اختر الخطة"
       }
     },
     "dashboard": {
