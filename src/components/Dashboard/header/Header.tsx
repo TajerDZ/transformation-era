@@ -39,10 +39,6 @@ function Header() {
           </div>
         </div>
         <div className="flex items-center gap-0">
-          <Link to="/dashboard/notifications" className="relative ">
-            <span className="absolute bottom-1 start-0 flex h-2 w-2 items-center justify-center rounded-full bg-red-500 text-xs text-white z-1" />
-            <Icon name="Bell" size={26} className="text-muted-foreground" />
-          </Link>
           <DropDownChangeLang />
           <DropDownUser />
         </div>
