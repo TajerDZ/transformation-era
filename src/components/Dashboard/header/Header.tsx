@@ -6,7 +6,6 @@ import DropDownChangeLang from "./DropDownChangeLang";
 import { useContext } from "react";
 import { SideBarContext } from "@/hooks/SideBarContext";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
 import Logo from "@/assets/logo.png";
 
 function Header() {

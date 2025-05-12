@@ -133,7 +133,13 @@
       "product/service": "المنتج/الخدمة",
       "price": "السعر",
       "renewal_date": "تاريخ التجديد",
-      "dashboard": "لوحة التحكم"
+      "dashboard": "لوحة التحكم",
+      "paid": "مدفوع",
+      "pending": "قيد الانتظار",
+      "due": "مستحقة",
+      "active": "فعال",
+      "rejected": "مرفوض",
+      "status": "الحالة"
     },
     "dialog": {
       "renewal": {

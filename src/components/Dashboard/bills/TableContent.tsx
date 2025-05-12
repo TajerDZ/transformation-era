@@ -85,7 +85,7 @@ function TableContent({
                     {format(item.createdAt, "dd-MM-yyyy")}
                   </TableCell>
                   <TableCell className="text-center">
-                    {item.order.product.name}
+                    {item?.order?.product?.name}
                   </TableCell>
                   <TableCell className="text-center">
                     {item.dueDate ? format(item.dueDate, "dd-MM-yyyy") : "-"}

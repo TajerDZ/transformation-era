@@ -132,6 +132,9 @@ function Main() {
                 {t("products.table.expiration_date")}
               </TableHead>
               <TableHead className="text-muted-foreground text-center">
+                {t("products.table.status")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
                 {t("products.table.movements")}
               </TableHead>
             </TableHeader>
@@ -148,8 +151,52 @@ function Main() {
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {formatDate(item.renewalDate)}
                     </TableCell>
+                    <TableCell className="text-start">
+                      {item.status === "paid" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-[#E9FFF2] text-[#4CAF50]"
+                        >
+                          {t("products.table.paid")}
+                        </Badge>
+                      ) : item.status === "rejected" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-[#FFF2E9] text-[#FF6060]"
+                        >
+                          {t("products.table.rejected")}
+                        </Badge>
+                      ) : item.status === "due" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-blue-300/10 text-blue-400"
+                        >
+                          {t("products.table.due")}
+                        </Badge>
+                      ) : item.status === "pending" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-orange-300/30 text-orange-400"
+                        >
+                          {t("products.table.pending")}
+                        </Badge>
+                      ) : (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-orange-300/30 text-orange-400"
+                        >
+                          {t("products.table.pending")}
+                        </Badge>
+                      )}
+                      {/* <Badge
+                    variant="default"
+                    className="text-xs bg-[#FFF2E9] text-[#FF6060]"
+                  >
+                    {t("orders.table.inactive")}
+                  </Badge> */}
+                    </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
-                      {!item.updated ? (
+                      {!item.updated && item.status != "pending" ? (
                         <div className="flex items-center justify-center gap-2">
                           <Button
                             className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
@@ -172,7 +219,7 @@ function Main() {
                 ))
               ) : (
                 <TableRow className="h-32">
-                  <TableCell colSpan={4} className="text-center ">
+                  <TableCell colSpan={5} className="text-center ">
                     <div className="flex flex-col justify-center items-center gap-5">
                       <img src="/emptyData.svg" alt="" className="w-20" />
                       <h1 className="text-muted-foreground">
@@ -215,6 +262,9 @@ function Main() {
                 {t("products.table.expiration_date")}
               </TableHead>
               <TableHead className="text-muted-foreground text-center">
+                {t("products.table.status")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
                 {t("details")}
               </TableHead>
             </TableHeader>
@@ -230,6 +280,50 @@ function Main() {
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {formatDate(item.renewalDate)}
+                    </TableCell>
+                    <TableCell className="text-start">
+                      {item.status === "paid" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-[#E9FFF2] text-[#4CAF50]"
+                        >
+                          {t("products.table.paid")}
+                        </Badge>
+                      ) : item.status === "rejected" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-[#FFF2E9] text-[#FF6060]"
+                        >
+                          {t("products.table.rejected")}
+                        </Badge>
+                      ) : item.status === "due" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-blue-300/10 text-blue-400"
+                        >
+                          {t("products.table.due")}
+                        </Badge>
+                      ) : item.status === "pending" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-orange-300/30 text-orange-400"
+                        >
+                          {t("products.table.pending")}
+                        </Badge>
+                      ) : (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-orange-300/30 text-orange-400"
+                        >
+                          {t("products.table.pending")}
+                        </Badge>
+                      )}
+                      {/* <Badge
+                    variant="default"
+                    className="text-xs bg-[#FFF2E9] text-[#FF6060]"
+                  >
+                    {t("orders.table.inactive")}
+                  </Badge> */}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
                       <Button
@@ -247,7 +341,7 @@ function Main() {
                 ))
               ) : (
                 <TableRow className="h-32">
-                  <TableCell colSpan={4} className="text-center ">
+                  <TableCell colSpan={5} className="text-center ">
                     <div className="flex flex-col justify-center items-center gap-5">
                       <img src="/emptyData.svg" alt="" className="w-20" />
                       <h1 className="text-muted-foreground">
@@ -307,10 +401,43 @@ function Main() {
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {formatDate(item.renewalDate)}
                     </TableCell>
-                    <TableCell className="text-center text-secondary-1 font-medium">
-                      <Badge variant="secondary">
-                        {t(`status_item.${item.status}`)}
-                      </Badge>
+                    <TableCell className="text-start">
+                      {item.status === "paid" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-[#E9FFF2] text-[#4CAF50]"
+                        >
+                          {t("products.table.paid")}
+                        </Badge>
+                      ) : item.status === "rejected" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-[#FFF2E9] text-[#FF6060]"
+                        >
+                          {t("products.table.rejected")}
+                        </Badge>
+                      ) : item.status === "due" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-blue-300/10 text-blue-400"
+                        >
+                          {t("products.table.due")}
+                        </Badge>
+                      ) : item.status === "pending" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-orange-300/30 text-orange-400"
+                        >
+                          {t("products.table.pending")}
+                        </Badge>
+                      ) : (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-orange-300/30 text-orange-400"
+                        >
+                          {t("products.table.pending")}
+                        </Badge>
+                      )}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
                       <Button
