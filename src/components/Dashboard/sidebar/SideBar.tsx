@@ -115,38 +115,6 @@ function SideBar() {
               </>
             ))}
           </div>
-          <div>
-            <Separator className="my-4" />
-            <div
-              className={cn(
-                "flex items-center justify-between px-4 mb-4 overflow-hidden w-full",
-                open ? "justify-between" : "justify-center"
-              )}
-            >
-              <div className="flex items-center gap-2">
-                <img
-                  src="https://s3-alpha-sig.figma.com/img/c09d/96f4/75773c7ca6c4519f4457986d459d77cb?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fEZ94Ytr3f8HXiHK4bT-hKm~ZfUhGyTzWwK4xf5Nu~VdE6UauTru2JMA2ZxTsVmPCVHyzkh75fZiO8U4b73cocWPCI2DBScbOZyMWz~FBp4N822Iu4qDmA81dkEEtEXZLfbgjwag7P3l2w~Fp5bIeQQ3mrmzZnK3hUMAscAD5alrIzhr2xGen9rrchA0h-pVCD2w4kGZsmwIyyfox2Ugr~qF9tzlCYUb8W39CVvVkcDoEYH20qaEe-RSIo2cM4xdr4Rqawvs1vyleLxqYhZYLDkgsdrru1kMSiNrCb5yeO8ePj5j4wgdvMY1gBicoNek7EQ6KXfiHFIdiwGX7UFYTA__"
-                  alt="user"
-                  className="w-8 h-8 object-cover rounded-full"
-                />
-                {open && (
-                  <div className="-space-y-1">
-                    <p className="text-muted-foreground text-xs">
-                      {t("welcome")} 👋
-                    </p>
-                    <h1 className="text-sm">{"حمزة هاشم"}</h1>
-                  </div>
-                )}
-              </div>
-              {open && (
-                <Icon
-                  name={i18n.dir() == "rtl" ? "ChevronLeft" : "ChevronRight"}
-                  size={20}
-                  className="text-gray-500"
-                />
-              )}
-            </div>
-          </div>
         </div>
       </div>
     </div>
