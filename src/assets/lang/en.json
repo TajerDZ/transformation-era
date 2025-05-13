@@ -282,7 +282,7 @@
       "service": "Service",
       "due_date": "Due Date",
       "bill_amount": "Bill Amount",
-      "edit_bill": "Edit Bill"
+      "edit_bill": "Invoice details"
     },
     "details": {
       "title": "Bill Number",
