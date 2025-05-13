@@ -18,6 +18,7 @@ export const AllProduct_QUERY = gql`
         plans {
           id
           name
+          description
           details {
             id
             key

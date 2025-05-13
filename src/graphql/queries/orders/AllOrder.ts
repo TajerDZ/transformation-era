@@ -42,6 +42,7 @@ export const AllOrder_QUERY = gql`
           plans {
             id
             name
+            description
             details {
               id
               key
@@ -59,6 +60,7 @@ export const AllOrder_QUERY = gql`
         plan {
           id
           name
+          description
           prices {
             id
             key

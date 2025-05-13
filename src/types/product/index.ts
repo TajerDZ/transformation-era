@@ -12,6 +12,7 @@ export type ProductGraphql = {
   plans: {
     id: string;
     name: string;
+    description: string;
     details: {
       id: string;
       key: string;

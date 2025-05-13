@@ -115,8 +115,7 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                           <span className="text-sm">ريال</span>
                         </span>
                         <p className="text-sm font-semibold text-[#7C7C7C]">
-                          كل شركة تحتاج إلى موقع، هذه الباقة لموقع تعريفي في
-                          صفحة واحدة.
+                          {plan.description}
                         </p>
                       </div>
                       <div>

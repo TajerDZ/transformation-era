@@ -16,6 +16,7 @@ export const AllOrderClient_QUERY = gql`
           plans {
             id
             name
+            description
             prices {
               discount
               id
@@ -34,6 +35,7 @@ export const AllOrderClient_QUERY = gql`
         plan {
           id
           name
+          description
           prices {
             discount
             id

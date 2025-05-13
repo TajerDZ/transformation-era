@@ -38,6 +38,7 @@ export const UpgradeOrder_Mutation = gql`
         product {
           name
           id
+          description
           plans {
             id
             name
@@ -58,6 +59,7 @@ export const UpgradeOrder_Mutation = gql`
         plan {
           id
           name
+          description
           prices {
             id
             duration

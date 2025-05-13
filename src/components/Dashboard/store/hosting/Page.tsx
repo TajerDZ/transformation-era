@@ -71,7 +71,7 @@ function Page() {
                   <span className="text-sm">ريال/ سنويًا</span>
                 </span>
                 <p className="text-sm font-semibold text-[#7C7C7C] mt-4">
-                  حزمة اقتصادية مثالية للمشاريع الصغيرة
+                  {plan.description}
                 </p>
               </div>
               <div>
