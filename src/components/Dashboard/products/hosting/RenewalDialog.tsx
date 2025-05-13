@@ -122,47 +122,49 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
               </Card>
             </div>
             <div className="space-y-2">
-              {item?.plan.prices.map((price) => (
-                <Card
-                  className={cn(
-                    "p-2 max-md:p-2 shadow-none flex-row justify-between rounded-md hover:bg-primary-1/10 cursor-pointer",
-                    formState.idPrice == price.id && "border-primary-2"
-                  )}
-                  onClick={() => {
-                    handleInputChange("idPrice", price.id);
-                    setSelectPrice(price);
-                    if (new Date(item.renewalDate) > new Date()) {
-                      handleInputChange(
-                        "dueDate",
-                        addMonths(new Date(item.renewalDate), price.duration)
-                      );
-                    } else {
-                      handleInputChange(
-                        "dueDate",
-                        addMonths(new Date(), price.duration)
-                      );
-                    }
-                  }}
-                  key={price.id}
-                >
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={cn(
-                        "border border-gray-300 h-5 w-5 flex justify-center items-center rounded-full",
-                        formState.idPrice == price.id && "border-primary-2"
-                      )}
-                    >
-                      {formState.idPrice == price.id && (
-                        <span className="bg-primary-2 w-3 h-3 block rounded-full" />
-                      )}
-                    </span>
-                    <p>{price.key}</p>
-                  </div>
-                  <Badge className="text-[10px] bg-primary-1">
-                    {price.value} ريال
-                  </Badge>
-                </Card>
-              ))}
+              {item?.product.plans
+                .find((e) => e.id === item.plan.id)?.prices
+                .map((price) => (
+                  <Card
+                    className={cn(
+                      "p-2 max-md:p-2 shadow-none flex-row justify-between rounded-md hover:bg-primary-1/10 cursor-pointer",
+                      formState.idPrice == price.id && "border-primary-2"
+                    )}
+                    onClick={() => {
+                      handleInputChange("idPrice", price.id);
+                      setSelectPrice(price);
+                      if (new Date(item.renewalDate) > new Date()) {
+                        handleInputChange(
+                          "dueDate",
+                          addMonths(new Date(item.renewalDate), price.duration)
+                        );
+                      } else {
+                        handleInputChange(
+                          "dueDate",
+                          addMonths(new Date(), price.duration)
+                        );
+                      }
+                    }}
+                    key={price.id}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={cn(
+                          "border border-gray-300 h-5 w-5 flex justify-center items-center rounded-full",
+                          formState.idPrice == price.id && "border-primary-2"
+                        )}
+                      >
+                        {formState.idPrice == price.id && (
+                          <span className="bg-primary-2 w-3 h-3 block rounded-full" />
+                        )}
+                      </span>
+                      <p>{price.key}</p>
+                    </div>
+                    <Badge className="text-[10px] bg-primary-1">
+                      {price.value} ريال
+                    </Badge>
+                  </Card>
+                ))}
             </div>
 
             <div className="">
