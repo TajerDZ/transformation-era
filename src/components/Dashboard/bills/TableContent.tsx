@@ -17,8 +17,6 @@ import { InvoiceGraphql } from "@/types/orders";
 import TableSkeleton from "@/components/ui/tableSkeleton";
 import { format } from "date-fns";
 type PropsTableContent = {
-  handleEdit: (item: InvoiceGraphql) => void;
-  handleDelete: (item: InvoiceGraphql) => void;
   handleDetails: (item: InvoiceGraphql) => void;
   items: InvoiceGraphql[];
   loading: boolean;
@@ -36,6 +34,7 @@ function TableContent({
   countItems,
   page,
   limit,
+  handleDetails,
 }: PropsTableContent) {
   const context = useContext(SideBarContext);
   if (!context) {
@@ -57,7 +56,7 @@ function TableContent({
       <div>
         <Table className="border border-x-0 border-b-0">
           <TableHeader className="border-b  ">
-            <TableHead className="text-muted-foreground text-center">
+            <TableHead className="text-muted-foreground text-start">
               {t("bills.table.bill_number")}
             </TableHead>
             <TableHead className="text-muted-foreground text-center">
@@ -78,8 +77,8 @@ function TableContent({
             {items.length > 0 ? (
               items.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell className="text-center">
-                    #{item.numberInvoice}
+                  <TableCell className="text-start">
+                    # {item.numberInvoice}
                   </TableCell>
                   <TableCell className="text-center">
                     {format(item.createdAt, "dd-MM-yyyy")}
@@ -94,7 +93,11 @@ function TableContent({
                     {item.totalPrice} ريال
                   </TableCell>
                   <TableCell className="text-center">
-                    <Button variant="secondary" className="text-primary-2">
+                    <Button
+                      variant="secondary"
+                      className="text-primary-2"
+                      onClick={() => handleDetails(item)}
+                    >
                       {t("bills.table.edit_bill")}
                     </Button>
                   </TableCell>

@@ -3,24 +3,24 @@
     "title": "Log in to your account",
     "subtitle": "Enter your email or phone number and password.",
     "password": "Password",
-    "email": "Email",
+    "email": "Email Address",
     "email_placeholder": "Enter your email",
     "login": "Login",
-    "remember_me": "Remember me",
-    "forgot_password": "Forgot password ?",
-    "register": "Register",
+    "remember_me": "Remember password",
+    "forgot_password": "Forgot your password?",
+    "register": "Create Account",
     "error": "Invalid username or password",
     "no_account": "Don't have an account?",
     "facebook": "Login with Facebook",
     "google": "Login with Google"
   },
   "register": {
-    "title": "Create an account",
-    "subtitle": "Enter your details to create a new account.",
+    "title": "Create a New Account",
+    "subtitle": "Enter your information to create a new account.",
     "password": "Password",
-    "email": "Email",
+    "email": "Email Address",
     "email_placeholder": "Enter your email",
-    "register": "Register",
+    "register": "Create Account",
     "login": "Login",
     "error": "Invalid username or password",
     "have_account": "Already have an account?",
@@ -30,35 +30,39 @@
     "name_placeholder": "Enter your name",
     "confirm_password": "Confirm Password",
     "confirm_password_placeholder": "Confirm your password",
-    "phone": "Phone",
-    "phone_placeholder": "Enter your phone number"
+    "phone": "Phone Number",
+    "phone_placeholder": "Enter your phone number",
+    "first_name": "First Name",
+    "first_name_placeholder": "Enter your first name",
+    "last_name": "Last Name",
+    "last_name_placeholder": "Enter your last name"
   },
   "forget_password": {
-    "title": "Forgot your password?",
-    "subtitle": "Enter the email address you used to log in, to receive a password reset link.",
+    "title": "Forgot Password?",
+    "subtitle": "Enter the email you used to sign in and we’ll send a reset link.",
     "email": "Email",
     "email_placeholder": "Enter your email",
     "login": "Login",
     "error": "Invalid email address",
-    "success": "Password reset link sent to your email.",
-    "verify_code_title": "verification code",
+    "success": "A password reset link has been sent to your email.",
+    "verify_code_title": "Verification Code",
     "verify_code_subtitle": "Enter the verification code sent to your email.",
-    "reset_password_title": "Set new password",
-    "reset_password_subtitle": "Set a new password for your account so you can log in.",
-    "send_otp": "Send OTP",
+    "reset_password_title": "Set a New Password",
+    "reset_password_subtitle": "Set a new password for your account to log in.",
+    "send_otp": "Send Verification Code",
     "verify_code": "Verify Code",
     "reset_password": "Reset Password",
-    "resend_otp": "Resend OTP",
+    "resend_otp": "Resend Code",
     "new_password": "New Password",
     "confirm_new_password": "Confirm New Password",
-    "new_password_placeholder": "Enter your new password"
+    "new_password_placeholder": "Enter the new password"
   },
   "header": {
     "search_placeholder": "Search here",
     "profile": "Account Info",
     "password": "Change Password",
     "logout": "Logout",
-    "support": "Technical support",
+    "support": "Support",
     "english": "English",
     "arabic": "Arabic"
   },
@@ -87,11 +91,12 @@
   "details": "Details",
   "status": "Status",
   "back": "Back",
+  "loading...": "Loading...",
   "home": {
-    "title": "home",
+    "title": "Dashboard",
     "welcome": {
       "title": "Welcome",
-      "description": "We're glad you're here! Here's a quick look at your hosting status.",
+      "description": "We’re glad to have you here! Here’s a quick look at your hosting status.",
       "dateEnd": "End Date",
       "remainingDays": "Remaining Days",
       "renewal": "Renewal"
@@ -128,22 +133,48 @@
       "product/service": "Product/Service",
       "price": "Price",
       "renewal_date": "Renewal Date",
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "paid": "Paid",
+      "pending": "Pending",
+      "due": "Due",
+      "active": "Active",
+      "rejected": "Rejected",
+      "status": "Status"
     },
     "dialog": {
       "renewal": {
-        "title": "Renew Your Hosting Subscription",
+        "title": "Hosting Subscription Renewal",
         "description": "Review the selected invoice and proceed with the payment.",
         "save": "Save Changes",
         "cancel": "Cancel",
         "subscription_number": "Subscription Number",
         "service": "Service",
-        "code_lable": "Do you have a discount code?",
+        "code_lable": "Have a discount code?",
         "expiration_date": "Expiration Date",
         "subtotal": "Subtotal",
         "discount": "Discount",
         "total": "Total",
-        "tax": "Value Added Tax (15%)"
+        "tax": "VAT (15%)"
+      },
+      "upgrade": {
+        "title": "Upgrade Plan",
+        "description": "Review the selected invoice and proceed with the payment.",
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "plan": "Plan",
+        "price&duration": "Price & Duration",
+        "price&duration_placeholder": "Select price and duration",
+        "plan_placeholder": "Select a plan"
+      },
+      "subscribe": {
+        "title": "New Subscription",
+        "description": "Review the selected invoice and proceed with the payment.",
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "plan": "Plan",
+        "price&duration": "Price & Duration",
+        "price&duration_placeholder": "Select price and duration",
+        "plan_placeholder": "Select a plan"
       }
     },
     "dashboard": {
@@ -223,5 +254,68 @@
       "phone_placeholder": "Enter mobile number",
       "language_placeholder": "Select language"
     }
-  }
+  },
+  "store": {
+    "title": "Store",
+    "explore_now": "Explore Now",
+    "hosting": {
+      "title": "Website Hosting",
+      "subscribe_now": "Subscribe Now"
+    },
+    "web_design": {
+      "title": "Website Design",
+      "subscribe_now": "Subscribe Now"
+    }
+  },
+  "bills": {
+    "title": "Bills",
+    "filter": "Filter",
+    "search": "Search",
+    "filter_results": "Filter Results",
+    "clear_filter": "Clear Filter",
+    "search_button": "Apply Filter",
+    "search_cancel": "Cancel",
+    "service_placeholder": "Select Service",
+    "table": {
+      "bill_number": "Bill Number",
+      "bill_date": "Bill Date",
+      "service": "Service",
+      "due_date": "Due Date",
+      "bill_amount": "Bill Amount",
+      "edit_bill": "Edit Bill"
+    },
+    "details": {
+      "title": "Bill Number",
+      "save_bill": "Save Bill",
+      "bill_number": "Bill Number",
+      "service": "Service",
+      "period": "Period",
+      "value": "Value",
+      "subtotal": "Subtotal",
+      "tax": "VAT (15%)",
+      "total": "Total"
+    }
+  },
+  "notifications": {
+    "title": "Notifications"
+  },
+  "validators": {
+    "required": "This field is required",
+    "email": "Invalid email address",
+    "phone": "Invalid mobile number",
+    "passwordValidator": "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character",
+    "confirmedValidator": "Password confirmation does not match the password",
+    "enterNumberBetween": "The number must be between {{min}} and {{max}}",
+    "integerValidator": "This field must be an integer",
+    "numericValidator": "This field must be numeric",
+    "regexValidator": "Invalid regex field format",
+    "alphaValidator": "Alpha field may contain letters only",
+    "urlValidator": "Invalid URL",
+    "lengthValidator": "Character field length must be {{length}} characters",
+    "minlengthValidator": "Character field must be at least {{minlength}} characters long",
+    "greaterValidator": "The number must be greater than {{greater}}",
+    "greaterOrEqualValidator": "The number must be greater than or equal to {{greaterOrEqual}}",
+    "positiveValidator": "The value must be positive"
+  },
+  "No data available in the table": "No data available in the table"
 }

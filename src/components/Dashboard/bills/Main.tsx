@@ -9,8 +9,10 @@ import TableContent from "./TableContent";
 import { InvoiceGraphql } from "@/types/orders";
 import { useQuery } from "@apollo/client";
 import { AllInvoice_QUERY } from "@/graphql/queries/orders/AllInvoice";
+import DetailsDialog from "./DetailsDialog";
 function Main() {
   const [selectedItem, setSelectedItem] = useState<InvoiceGraphql | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [items, setItems] = useState<InvoiceGraphql[]>([]);
   const [page, setPage] = useState(1);
   const [countItems, setCountItems] = useState(0);
@@ -46,16 +48,10 @@ function Main() {
       setPage(page - 1);
     }
   };
-  const handleEdit = (item: InvoiceGraphql) => {
-    setSelectedItem(item);
-    console.log(selectedItem);
-  };
-  const handleDelete = (item: InvoiceGraphql) => {
-    setSelectedItem(item);
-  };
 
   const handleDetails = (item: InvoiceGraphql) => {
     setSelectedItem(item);
+    setIsDetailsOpen(true);
   };
 
   return (
@@ -77,8 +73,6 @@ function Main() {
       <div className="space-y-3">
         <AutocompleteFilter setFilter={setFilter} />
         <TableContent
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
           handleDetails={handleDetails}
           items={items}
           loading={loading}
@@ -89,6 +83,13 @@ function Main() {
           limit={limit}
         />
       </div>
+      {isDetailsOpen && selectedItem && (
+        <DetailsDialog
+          isOpen={isDetailsOpen}
+          onOpen={setIsDetailsOpen}
+          item={selectedItem}
+        />
+      )}
     </div>
   );
 }
