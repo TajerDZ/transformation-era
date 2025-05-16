@@ -10,7 +10,9 @@ import { InvoiceGraphql } from "@/types/orders";
 import { useQuery } from "@apollo/client";
 import { AllInvoice_QUERY } from "@/graphql/queries/orders/AllInvoice";
 import DetailsDialog from "./DetailsDialog";
+import useStore from "@/store/useStore";
 function Main() {
+  const idUser = useStore((state: any) => state.idUser);
   const [selectedItem, setSelectedItem] = useState<InvoiceGraphql | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [items, setItems] = useState<InvoiceGraphql[]>([]);
@@ -21,13 +23,14 @@ function Main() {
   const { loading } = useQuery(AllInvoice_QUERY, {
     fetchPolicy: "network-only",
     variables: {
+      idUser: idUser,
       filter: filter,
       pagination: {
         page: page,
         limit: limit,
       },
     },
-    onCompleted: ({ allInvoice: { data, total } }) => {
+    onCompleted: ({ allInvoiceClient: { data, total } }) => {
       setItems(data);
       setCountItems(total);
     },
