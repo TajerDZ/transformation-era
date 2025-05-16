@@ -26,6 +26,7 @@ import { useQuery } from "@apollo/client";
 import useStore from "@/store/useStore";
 import { formatDate } from "@/utils/formatters";
 import UpgradePlanDialog from "./hosting/upgrade/UpgradePlan";
+import TableSkeleton from "@/components/ui/tableSkeleton";
 
 function Main() {
   const [isOpenRenewal, setIsOpenRenewal] = useState(false);
@@ -40,7 +41,7 @@ function Main() {
     OrderGraphql[]
   >([]);
   const idUser = useStore((state: any) => state.idUser);
-  /*const { loading } =*/ useQuery(AllOrderClient_QUERY, {
+  const { loading } = useQuery(AllOrderClient_QUERY, {
     fetchPolicy: "network-only",
     variables: { idUser: idUser },
     onCompleted: ({ allOrderClient: { data } }) => {
@@ -146,7 +147,7 @@ function Main() {
                       {item.domainName}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
-                      {item.plan.name}
+                      {item.plan?.name}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {formatDate(item.renewalDate)}
@@ -217,6 +218,10 @@ function Main() {
                     </TableCell>
                   </TableRow>
                 ))
+              ) : loading ? (
+                Array.from({ length: 2 }, (_, index) => (
+                  <TableSkeleton key={index} />
+                ))
               ) : (
                 <TableRow className="h-32">
                   <TableCell colSpan={5} className="text-center ">
@@ -276,7 +281,7 @@ function Main() {
                       {item.domainName}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
-                      {item.plan.name}
+                      {item.plan?.name}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {formatDate(item.renewalDate)}
@@ -338,6 +343,10 @@ function Main() {
                       </Button>
                     </TableCell>
                   </TableRow>
+                ))
+              ) : loading ? (
+                Array.from({ length: 2 }, (_, index) => (
+                  <TableSkeleton key={index} />
                 ))
               ) : (
                 <TableRow className="h-32">
@@ -452,6 +461,10 @@ function Main() {
                       </Button>
                     </TableCell>
                   </TableRow>
+                ))
+              ) : loading ? (
+                Array.from({ length: 2 }, (_, index) => (
+                  <TableSkeleton key={index} columns={4} />
                 ))
               ) : (
                 <TableRow className="h-32">

@@ -317,5 +317,6 @@
     "greaterOrEqualValidator": "The number must be greater than or equal to {{greaterOrEqual}}",
     "positiveValidator": "The value must be positive"
   },
-  "No data available in the table": "No data available in the table"
+  "No data available in the table": "No data available in the table",
+  "No data available": "No data available"
 }

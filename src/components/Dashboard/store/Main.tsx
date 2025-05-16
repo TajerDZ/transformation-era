@@ -9,11 +9,12 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { AllProduct_QUERY } from "@/graphql/queries/products/AllProduct";
 import { ProductGraphql } from "@/types/product";
+import CardSkeleton from "./CardSkeleton";
 
 function Main() {
   const [items, setItems] = useState<ProductGraphql[]>([]);
 
-  /*const { loading } =*/ useQuery(AllProduct_QUERY, {
+  const { loading } = useQuery(AllProduct_QUERY, {
     fetchPolicy: "network-only",
     onCompleted: ({ allProduct: { data } }) => {
       setItems(data);
@@ -62,6 +63,12 @@ function Main() {
                 </div>
               </div>
             </Card>
+          ))}
+        </div>
+      ) : loading ? (
+        <div className="grid grid-cols-3 max-sm:grid-cols-1 max-md:grid-cols-2 gap-4 ">
+          {Array.from({ length: 6 }, (_, index) => (
+            <CardSkeleton key={index} />
           ))}
         </div>
       ) : (

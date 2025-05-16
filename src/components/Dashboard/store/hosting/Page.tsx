@@ -11,6 +11,7 @@ import { useQuery } from "@apollo/client";
 import { Product_QUERY } from "@/graphql/queries/products/Product";
 import { useParams } from "react-router-dom";
 import SubDialog from "./SubDialog";
+import CardSkeleton from "./CardSkeleton";
 
 function Page() {
   const { idProduct } = useParams();
@@ -20,7 +21,7 @@ function Page() {
     ProductGraphql["plans"][0] | null
   >(null);
 
-  /*const { loading } =*/ useQuery(Product_QUERY, {
+  const { loading } = useQuery(Product_QUERY, {
     fetchPolicy: "network-only",
     variables: {
       productId: idProduct,
@@ -57,50 +58,63 @@ function Page() {
           }}
         />
       </div>
-      <div className="grid grid-cols-2 gap-10 max-md:grid-cols-1 max-lg:gap-5">
-        {item?.plans.map((plan) => (
-          <Card
-            className="shadow-none rounded-2xl p-4 max-md:p-4 bg-[#F2F3FF]"
-            key={plan.id}
-          >
-            <div className="space-y-4">
-              <div className="space-y-1">
-                <h1 className="font-semibold text-[#444444]">{plan.name}</h1>
-                <span className="text-secondary-5 text-2xl font-bold block">
-                  {plan.prices[0].value}{" "}
-                  <span className="text-sm">ريال/ سنويًا</span>
-                </span>
-                <p className="text-sm font-semibold text-[#7C7C7C] mt-4">
-                  {plan.description}
-                </p>
+      {(item?.plans ?? []).length > 0 ? (
+        <div className="grid grid-cols-2 gap-10 max-md:grid-cols-1 max-lg:gap-5">
+          {item?.plans.map((plan) => (
+            <Card
+              className="shadow-none rounded-2xl p-4 max-md:p-4 bg-[#F2F3FF]"
+              key={plan.id}
+            >
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <h1 className="font-semibold text-[#444444]">{plan.name}</h1>
+                  <span className="text-secondary-5 text-2xl font-bold block">
+                    {plan.prices[0].value}{" "}
+                    <span className="text-sm">ريال/ سنويًا</span>
+                  </span>
+                  <p className="text-sm font-semibold text-[#7C7C7C] mt-4">
+                    {plan.description}
+                  </p>
+                </div>
+                <div>
+                  <Table>
+                    <TableBody>
+                      {plan.details.map((detail) => (
+                        <TableRow key={detail.id}>
+                          <TableCell className="text-sm font-semibold text-[#444444]">
+                            {detail.key}
+                          </TableCell>
+                          <TableCell className="text-sm font-semibold text-[#444444]">
+                            {detail.value}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                <Button
+                  variant="outline"
+                  className="border-secondary-2 text-secondary-2 bg-transparent hover:bg-secondary-2 hover:text-white transition-all duration-200 ease-in-out w-full rounded-full"
+                  onClick={() => handleSelectPlan(plan)}
+                >
+                  {t("store.hosting.subscribe_now")}{" "}
+                </Button>
               </div>
-              <div>
-                <Table>
-                  <TableBody>
-                    {plan.details.map((detail) => (
-                      <TableRow key={detail.id}>
-                        <TableCell className="text-sm font-semibold text-[#444444]">
-                          {detail.key}
-                        </TableCell>
-                        <TableCell className="text-sm font-semibold text-[#444444]">
-                          {detail.value}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-              <Button
-                variant="outline"
-                className="border-secondary-2 text-secondary-2 bg-transparent hover:bg-secondary-2 hover:text-white transition-all duration-200 ease-in-out w-full rounded-full"
-                onClick={() => handleSelectPlan(plan)}
-              >
-                {t("store.hosting.subscribe_now")}{" "}
-              </Button>
-            </div>
-          </Card>
-        ))}
-      </div>
+            </Card>
+          ))}
+        </div>
+      ) : loading ? (
+        <div className="grid grid-cols-2 gap-10 max-md:grid-cols-1 max-lg:gap-5">
+          {Array.from({ length: 2 }, (_, index) => (
+            <CardSkeleton key={index} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col justify-center items-center gap-5 h-64">
+          <img src="/emptyData.svg" alt="" className="w-20" />
+          <h1 className="text-muted-foreground">{t("No data available")}</h1>
+        </div>
+      )}
       {isOpenSub && selectPlan && item && (
         <SubDialog
           item={selectPlan}

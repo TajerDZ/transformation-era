@@ -319,6 +319,9 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
               type="button"
               variant="outline"
               className=" rounded-full w-1/2"
+              onClick={() => {
+                onOpen(false);
+              }}
             >
               {t("products.dialog.upgrade.cancel")}
             </Button>

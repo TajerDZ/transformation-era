@@ -41,7 +41,7 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
   >(null);
   const { formState, handleInputChange, isChanged } = useDynamicForm<any>({
     idOrder: item.id,
-    idPlan: item.plan.id,
+    idPlan: item.plan?.id,
     idPrice: "",
     dueDate: item.renewalDate,
   });
@@ -122,9 +122,9 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
               </Card>
             </div>
             <div className="space-y-2">
-              {item?.product.plans
-                .find((e) => e.id === item.plan.id)?.prices
-                .map((price) => (
+              {item?.product?.plans
+                .find((e) => e.id === item.plan.id)
+                ?.prices.map((price) => (
                   <Card
                     className={cn(
                       "p-2 max-md:p-2 shadow-none flex-row justify-between rounded-md hover:bg-primary-1/10 cursor-pointer",
@@ -243,6 +243,9 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                 type="button"
                 variant="outline"
                 className=" rounded-full w-1/2"
+                onClick={() => {
+                  onOpen(false);
+                }}
               >
                 {t("products.dialog.renewal.cancel")}
               </Button>
