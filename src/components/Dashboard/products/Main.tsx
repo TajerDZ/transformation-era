@@ -449,16 +449,24 @@ function Main() {
                       )}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
-                      <Button
-                        asChild
-                        variant="outline"
-                        className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
-                      >
-                        <Link to={"notchpal.com"}>
-                          <Icon name="LayoutGrid" size={16} />
-                          {t("products.table.dashboard")}
-                        </Link>
-                      </Button>
+                      {!item.updated && item.status != "pending" ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <Button
+                            className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
+                            onClick={() => handleRenewal(item)}
+                          >
+                            {t("products.table.renewal")}
+                          </Button>
+                          <Button
+                            className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1"
+                            onClick={() => handleUpgrade(item)}
+                          >
+                            {t("products.table.promotion")}
+                          </Button>
+                        </div>
+                      ) : (
+                        <span>-</span>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))
