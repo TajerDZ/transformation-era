@@ -120,6 +120,8 @@
     "active": "Active",
     "inactive": "Inactive",
     "table": {
+      "renewed": "It is being reviewed.",
+      "plan_name": "Plan Name",
       "renewal": "Renewal",
       "promotion": "Upgrade",
       "hosting": "Hosting",

@@ -204,6 +204,9 @@ function SubDialog({ isOpen, onOpen, item, idProduct }: PropsDialog) {
                 type="button"
                 variant="outline"
                 className=" rounded-full w-1/2"
+                onClick={() => {
+                  onOpen(false);
+                }}
               >
                 {t("products.dialog.renewal.cancel")}
               </Button>

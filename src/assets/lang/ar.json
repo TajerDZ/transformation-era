@@ -120,6 +120,8 @@
     "active": "نشط",
     "inactive": "غير نشط",
     "table": {
+      "renewed": "يتم مراجعته",
+      "plan_name": "اسم الخطة",
       "renewal": "التجديد",
       "promotion": "ترقية",
       "hosting": "الاستضافة",

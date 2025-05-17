@@ -130,6 +130,9 @@ function Main() {
                 {t("products.table.period")}
               </TableHead>
               <TableHead className="text-muted-foreground text-center">
+                {t("products.table.plan_name")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
                 {t("products.table.expiration_date")}
               </TableHead>
               <TableHead className="text-muted-foreground text-center">
@@ -145,6 +148,163 @@ function Main() {
                   <TableRow className="divide-x-1" key={item.id}>
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {item.domainName}
+                    </TableCell>
+
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {item.pricePlans?.key ?? 0}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {item.plan?.name}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {formatDate(item.renewalDate)}
+                    </TableCell>
+                    <TableCell className="text-start">
+                      {item.status === "paid" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-[#E9FFF2] text-[#4CAF50]"
+                        >
+                          {t("products.table.paid")}
+                        </Badge>
+                      ) : item.status === "rejected" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-[#FFF2E9] text-[#FF6060]"
+                        >
+                          {t("products.table.rejected")}
+                        </Badge>
+                      ) : item.status === "due" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-blue-300/10 text-blue-400"
+                        >
+                          {t("products.table.due")}
+                        </Badge>
+                      ) : item.status === "pending" ? (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-orange-300/30 text-orange-400"
+                        >
+                          {t("products.table.pending")}
+                        </Badge>
+                      ) : (
+                        <Badge
+                          variant="default"
+                          className="text-xs bg-orange-300/30 text-orange-400"
+                        >
+                          {t("products.table.pending")}
+                        </Badge>
+                      )}
+                      {/* <Badge
+                    variant="default"
+                    className="text-xs bg-[#FFF2E9] text-[#FF6060]"
+                  >
+                    {t("orders.table.inactive")}
+                  </Badge> */}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {!item.updated && item.status != "pending" ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <Button
+                            className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
+                            onClick={() => handleRenewal(item)}
+                          >
+                            {t("products.table.renewal")}
+                          </Button>
+                          <Button
+                            className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1"
+                            onClick={() => handleUpgrade(item)}
+                          >
+                            {t("products.table.promotion")}
+                          </Button>
+                          {item.domainName && (
+                            <Button
+                              asChild
+                              variant="outline"
+                              className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
+                            >
+                              <Link to={item.id}>
+                                <Icon name="LayoutGrid" size={16} />
+                                {t("products.table.dashboard")}
+                              </Link>
+                            </Button>
+                          )}
+                        </div>
+                      ) : (
+                        <span>{t("products.table.renewed")}</span>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : loading ? (
+                Array.from({ length: 2 }, (_, index) => (
+                  <TableSkeleton key={index} columns={6} />
+                ))
+              ) : (
+                <TableRow className="h-32">
+                  <TableCell colSpan={6} className="text-center ">
+                    <div className="flex flex-col justify-center items-center gap-5">
+                      <img src="/emptyData.svg" alt="" className="w-20" />
+                      <h1 className="text-muted-foreground">
+                        {t("No data available in the table")}
+                      </h1>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </Card>
+
+      <Card
+        className={cn(
+          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300 max-sm:!w-full",
+          open && "max-lg:!w-[100%]"
+        )}
+        style={{
+          boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
+          overflowX: "auto",
+          width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
+        }}
+      >
+        <div>
+          <div className="flex items-center gap-4 p-4">
+            <img src={Domains} alt="" />
+            <h1>{t("products.table.domains")}</h1>
+          </div>
+          <Table className="border border-x-0 border-b-0">
+            <TableHeader className="border-b divide-x-1 ">
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.domain_name")}
+              </TableHead>
+
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.period")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.plan_name")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.expiration_date")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
+                {t("products.table.status")}
+              </TableHead>
+              <TableHead className="text-muted-foreground text-center">
+                {t("details")}
+              </TableHead>
+            </TableHeader>
+            <TableBody>
+              {itemsDomains.length > 0 ? (
+                itemsDomains.map((item: OrderGraphql) => (
+                  <TableRow className="divide-x-1" key={item.id}>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {item.domainName}
+                    </TableCell>
+                    <TableCell className="text-center text-secondary-1 font-medium">
+                      {item.pricePlans?.key ?? 0}
                     </TableCell>
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {item.plan?.name}
@@ -213,144 +373,18 @@ function Main() {
                           </Button>
                         </div>
                       ) : (
-                        <span>-</span>
+                        <span>{t("products.table.renewed")}</span>
                       )}
                     </TableCell>
                   </TableRow>
                 ))
               ) : loading ? (
                 Array.from({ length: 2 }, (_, index) => (
-                  <TableSkeleton key={index} />
+                  <TableSkeleton key={index} columns={6} />
                 ))
               ) : (
                 <TableRow className="h-32">
-                  <TableCell colSpan={5} className="text-center ">
-                    <div className="flex flex-col justify-center items-center gap-5">
-                      <img src="/emptyData.svg" alt="" className="w-20" />
-                      <h1 className="text-muted-foreground">
-                        {t("No data available in the table")}
-                      </h1>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </Card>
-
-      <Card
-        className={cn(
-          "shadow-none rounded-lg p-0 max-md:p-0 transition-all duration-300 max-sm:!w-full",
-          open && "max-lg:!w-[100%]"
-        )}
-        style={{
-          boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.1)",
-          overflowX: "auto",
-          width: open ? "calc(100vw - 19.5rem)" : "calc(100vw - 9.5rem)",
-        }}
-      >
-        <div>
-          <div className="flex items-center gap-4 p-4">
-            <img src={Domains} alt="" />
-            <h1>{t("products.table.domains")}</h1>
-          </div>
-          <Table className="border border-x-0 border-b-0">
-            <TableHeader className="border-b divide-x-1 ">
-              <TableHead className="text-muted-foreground text-center">
-                {t("products.table.domain_name")}
-              </TableHead>
-              <TableHead className="text-muted-foreground text-center">
-                {t("products.table.period")}
-              </TableHead>
-              <TableHead className="text-muted-foreground text-center">
-                {t("products.table.expiration_date")}
-              </TableHead>
-              <TableHead className="text-muted-foreground text-center">
-                {t("products.table.status")}
-              </TableHead>
-              <TableHead className="text-muted-foreground text-center">
-                {t("details")}
-              </TableHead>
-            </TableHeader>
-            <TableBody>
-              {itemsDomains.length > 0 ? (
-                itemsDomains.map((item: OrderGraphql) => (
-                  <TableRow className="divide-x-1" key={item.id}>
-                    <TableCell className="text-center text-secondary-1 font-medium">
-                      {item.domainName}
-                    </TableCell>
-                    <TableCell className="text-center text-secondary-1 font-medium">
-                      {item.plan?.name}
-                    </TableCell>
-                    <TableCell className="text-center text-secondary-1 font-medium">
-                      {formatDate(item.renewalDate)}
-                    </TableCell>
-                    <TableCell className="text-start">
-                      {item.status === "paid" ? (
-                        <Badge
-                          variant="default"
-                          className="text-xs bg-[#E9FFF2] text-[#4CAF50]"
-                        >
-                          {t("products.table.paid")}
-                        </Badge>
-                      ) : item.status === "rejected" ? (
-                        <Badge
-                          variant="default"
-                          className="text-xs bg-[#FFF2E9] text-[#FF6060]"
-                        >
-                          {t("products.table.rejected")}
-                        </Badge>
-                      ) : item.status === "due" ? (
-                        <Badge
-                          variant="default"
-                          className="text-xs bg-blue-300/10 text-blue-400"
-                        >
-                          {t("products.table.due")}
-                        </Badge>
-                      ) : item.status === "pending" ? (
-                        <Badge
-                          variant="default"
-                          className="text-xs bg-orange-300/30 text-orange-400"
-                        >
-                          {t("products.table.pending")}
-                        </Badge>
-                      ) : (
-                        <Badge
-                          variant="default"
-                          className="text-xs bg-orange-300/30 text-orange-400"
-                        >
-                          {t("products.table.pending")}
-                        </Badge>
-                      )}
-                      {/* <Badge
-                    variant="default"
-                    className="text-xs bg-[#FFF2E9] text-[#FF6060]"
-                  >
-                    {t("orders.table.inactive")}
-                  </Badge> */}
-                    </TableCell>
-                    <TableCell className="text-center text-secondary-1 font-medium">
-                      <Button
-                        asChild
-                        variant="outline"
-                        className="text-primary-2 border-primary-2 hover:text-secondary-1 hover:border-secondary-1"
-                      >
-                        <Link to={"notchpal.com"}>
-                          <Icon name="LayoutGrid" size={16} />
-                          {t("products.table.details")}
-                        </Link>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : loading ? (
-                Array.from({ length: 2 }, (_, index) => (
-                  <TableSkeleton key={index} />
-                ))
-              ) : (
-                <TableRow className="h-32">
-                  <TableCell colSpan={5} className="text-center ">
+                  <TableCell colSpan={6} className="text-center ">
                     <div className="flex flex-col justify-center items-center gap-5">
                       <img src="/emptyData.svg" alt="" className="w-20" />
                       <h1 className="text-muted-foreground">
@@ -465,7 +499,7 @@ function Main() {
                           </Button>
                         </div>
                       ) : (
-                        <span>-</span>
+                        <span>{t("products.table.renewed")}</span>
                       )}
                     </TableCell>
                   </TableRow>
