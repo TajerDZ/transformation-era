@@ -145,7 +145,7 @@
     },
     "dialog": {
       "renewal": {
-        "title": "Hosting Subscription Renewal",
+        "title": "Subscription Renewal",
         "description": "Review the selected invoice and proceed with the payment.",
         "save": "Save Changes",
         "cancel": "Cancel",

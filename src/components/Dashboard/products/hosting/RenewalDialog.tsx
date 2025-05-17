@@ -89,7 +89,6 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
           <DialogTitle>
             <p className="text-secondary-2">
               {t("products.dialog.renewal.title")} -{" "}
-              <span className="font-normal">notchpal.com</span>
             </p>
           </DialogTitle>
           <DialogDescription>
