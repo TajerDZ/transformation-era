@@ -1,7 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Logo from "@/assets/logo.png";
-import Facebook from "@/assets/facebook.png";
-import Google from "@/assets/google.png";
 import { t } from "i18next";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -136,25 +134,6 @@ function Login() {
                 {t("login.register")}
               </Link>
             </p>
-
-            <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full text-muted-foreground"
-              >
-                <img src={Google} alt="Google" className="w-4 h-4 me-2" />
-                {t("login.google")}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full text-muted-foreground"
-              >
-                <img src={Facebook} alt="Facebook" className="w-4 h-4 me-2" />
-                {t("login.facebook")}
-              </Button>
-            </div>
           </form>
         </CardContent>
       </Card>
