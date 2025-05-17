@@ -70,7 +70,7 @@ function Page() {
                   <h1 className="font-semibold text-[#444444]">{plan.name}</h1>
                   <span className="text-secondary-5 text-2xl font-bold block">
                     {plan.prices[0].value}{" "}
-                    <span className="text-sm">ريال/ سنويًا</span>
+                    <span className="text-sm">ريال/ {plan.prices[0].key}</span>
                   </span>
                   <p className="text-sm font-semibold text-[#7C7C7C] mt-4">
                     {plan.description}
