@@ -22,6 +22,7 @@ import { addMonths, format } from "date-fns";
 import { useState } from "react";
 import { ProductGraphql } from "@/types/product";
 import { CreateOrderClient_Mutation } from "@/graphql/mutation/orders/CreateOrderClient";
+import { formatPrice } from "@/utils/formatters";
 
 type PropsDialog = {
   isOpen: boolean;
@@ -52,8 +53,8 @@ function SubDialog({ isOpen, onOpen, item, idProduct }: PropsDialog) {
         },
         onCompleted: ({ createOrderClient: data }) => {
           if (data) {
-            toast("Order created successfully", {
-              description: "Order created successfully",
+            toast(t("store.products.subscribe_sucsses"), {
+              description: t("store.products.subscribe_description"),
               descriptionClassName: "!text-muted-foreground",
             });
             onOpen(false);
@@ -122,7 +123,7 @@ function SubDialog({ isOpen, onOpen, item, idProduct }: PropsDialog) {
                     <p>{price.key}</p>
                   </div>
                   <Badge className="text-[10px] bg-primary-1">
-                    {price.value} ريال
+                    {formatPrice(price.value)} ريال
                   </Badge>
                 </Card>
               ))}
@@ -147,7 +148,7 @@ function SubDialog({ isOpen, onOpen, item, idProduct }: PropsDialog) {
                         {t("products.dialog.renewal.subtotal")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {selectPrice ? selectPrice.value : "-"} ر.ع
+                        {selectPrice ? formatPrice(selectPrice.value) : "-"} ر.ع
                       </TableCell>
                     </TableRow>
                     <TableRow className="border-b-0">
@@ -156,7 +157,9 @@ function SubDialog({ isOpen, onOpen, item, idProduct }: PropsDialog) {
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
                         {selectPrice
-                          ? (selectPrice.discount * selectPrice.value) / 100
+                          ? formatPrice(
+                              (selectPrice.discount * selectPrice.value) / 100
+                            )
                           : "-"}{" "}
                         ر.ع
                       </TableCell>
@@ -166,7 +169,10 @@ function SubDialog({ isOpen, onOpen, item, idProduct }: PropsDialog) {
                         {t("products.dialog.renewal.tax")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {selectPrice ? (15 * selectPrice.value) / 100 : "-"} ر.ع
+                        {selectPrice
+                          ? formatPrice((15 * selectPrice.value) / 100)
+                          : "-"}{" "}
+                        ر.ع
                       </TableCell>
                     </TableRow>
                     <TableRow className="border-b-0">
@@ -175,9 +181,12 @@ function SubDialog({ isOpen, onOpen, item, idProduct }: PropsDialog) {
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
                         {selectPrice
-                          ? selectPrice.value -
-                            (selectPrice.discount * selectPrice.value) / 100 +
-                            (15 * selectPrice.value) / 100
+                          ? formatPrice(
+                              selectPrice.value -
+                                (selectPrice.discount * selectPrice.value) /
+                                  100 +
+                                (15 * selectPrice.value) / 100
+                            )
                           : "-"}{" "}
                         ر.ع
                       </TableCell>

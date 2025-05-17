@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { addMonths, format } from "date-fns";
+import { formatPrice } from "@/utils/formatters";
 
 type PropsDialog = {
   isOpen: boolean;
@@ -111,7 +112,7 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                           {plan.prices[0].key}
                         </h1>
                         <span className="text-secondary-5 text-2xl font-bold block">
-                          {plan.prices[0].value}{" "}
+                          {formatPrice(plan.prices[0].value || 0)}{" "}
                           <span className="text-sm">ريال</span>
                         </span>
                         <p className="text-sm font-semibold text-[#7C7C7C]">
@@ -253,7 +254,10 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                               {t("products.dialog.renewal.subtotal")}
                             </TableCell>
                             <TableCell className="text-end text-secondary-1 w-1/2">
-                              {selectPrice ? selectPrice.value : "-"} ر.ع
+                              {selectPrice
+                                ? formatPrice(selectPrice.value)
+                                : "-"}{" "}
+                              ر.ع
                             </TableCell>
                           </TableRow>
                           <TableRow className="border-b-0">
@@ -262,8 +266,10 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                             </TableCell>
                             <TableCell className="text-end text-secondary-1 w-1/2">
                               {selectPrice
-                                ? (selectPrice.discount * selectPrice.value) /
-                                  100
+                                ? formatPrice(
+                                    (selectPrice.discount * selectPrice.value) /
+                                      100
+                                  )
                                 : "-"}{" "}
                               ر.ع
                             </TableCell>
@@ -274,7 +280,7 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                             </TableCell>
                             <TableCell className="text-end text-secondary-1 w-1/2">
                               {selectPrice
-                                ? (15 * selectPrice.value) / 100
+                                ? formatPrice((15 * selectPrice.value) / 100)
                                 : "-"}{" "}
                               ر.ع
                             </TableCell>
@@ -285,10 +291,13 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                             </TableCell>
                             <TableCell className="text-end text-secondary-1 w-1/2">
                               {selectPrice
-                                ? selectPrice.value -
-                                  (selectPrice.discount * selectPrice.value) /
-                                    100 +
-                                  (15 * selectPrice.value) / 100
+                                ? formatPrice(
+                                    selectPrice.value -
+                                      (selectPrice.discount *
+                                        selectPrice.value) /
+                                        100 +
+                                      (15 * selectPrice.value) / 100
+                                  )
                                 : "-"}{" "}
                               ر.ع
                             </TableCell>

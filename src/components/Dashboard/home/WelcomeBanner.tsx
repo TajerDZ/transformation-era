@@ -1,14 +1,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 import ImgBanner from "@/assets/imgBanner.png";
 import { t } from "i18next";
+import useStore from "@/store/useStore";
 function WelcomeBanner() {
+  const user = useStore((state: any) => state.userData);
   return (
     <Card className="bg-banner  p-0">
       <CardContent className="flex  justify-between items-top h-48 p-4 relative ">
         <div>
           <div>
             <h1 className="text-2xl font-bold text-primary-2">
-              {t("home.welcome.title")} haroun 👋
+              {t("home.welcome.title")} {user.firstname + " " + user.lastname}{" "}
+              👋
             </h1>
             <p className="">{t("home.welcome.description")}</p>
           </div>

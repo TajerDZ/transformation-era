@@ -5,13 +5,14 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import client from "./hooks/apolloClient.tsx";
+import { Toaster } from "./components/ui/sonner.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <ApolloProvider client={client}>
         <App />
-        {/* <Toaster /> */}
+        <Toaster />
       </ApolloProvider>
     </BrowserRouter>
   </StrictMode>

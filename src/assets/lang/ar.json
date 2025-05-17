@@ -267,6 +267,10 @@
     "web_design": {
       "title": "تصميم المواقع",
       "subscribe_now": "اشترك الآن"
+    },
+    "products": {
+      "subscribe_sucsses": "تم الاشتراك بنجاح",
+      "subscribe_description": "تم الاشتراك في المنتج بنجاح. يمكنك إدارة اشتراكك من خلال لوحة التحكم الخاصة بك."
     }
   },
   "bills": {

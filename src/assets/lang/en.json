@@ -267,6 +267,10 @@
     "web_design": {
       "title": "Website Design",
       "subscribe_now": "Subscribe Now"
+    },
+    "products": {
+      "subscribe_sucsses": "Product subscription successful",
+      "subscribe_description": "Your subscription has been successfully completed. You can view your products in the dashboard."
     }
   },
   "bills": {
