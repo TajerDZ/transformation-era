@@ -73,7 +73,7 @@ function DetailsDialog({ isOpen, onOpen, item }: PropsDialog) {
                         {t("bills.details.value")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1">
-                        {item?.subTotalPrice} ر.ع
+                        {item?.subTotalPrice} ريال
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -90,7 +90,7 @@ function DetailsDialog({ isOpen, onOpen, item }: PropsDialog) {
                         {t("bills.details.subtotal")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {item.subTotalPrice} ر.ع
+                        {item.subTotalPrice} ريال
                       </TableCell>
                     </TableRow>
 
@@ -99,7 +99,7 @@ function DetailsDialog({ isOpen, onOpen, item }: PropsDialog) {
                         {t("bills.details.tax")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {item.tva} ر.ع
+                        {item.tva} ريال
                       </TableCell>
                     </TableRow>
                     <TableRow className="border-b-0">
@@ -107,7 +107,7 @@ function DetailsDialog({ isOpen, onOpen, item }: PropsDialog) {
                         {t("bills.details.total")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {item.totalPrice} ر.ع
+                        {item.totalPrice} ريال
                       </TableCell>
                     </TableRow>
                   </TableBody>

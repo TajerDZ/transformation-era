@@ -57,6 +57,7 @@ function SubDialog({ isOpen, onOpen, item, idProduct }: PropsDialog) {
               description: t("store.products.subscribe_description"),
               descriptionClassName: "!text-muted-foreground",
             });
+            window.location.replace(data.pricePlans.link);
             onOpen(false);
           }
         },
@@ -180,15 +181,7 @@ function SubDialog({ isOpen, onOpen, item, idProduct }: PropsDialog) {
                         {t("products.dialog.renewal.total")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {selectPrice
-                          ? formatPrice(
-                              selectPrice.value -
-                                (selectPrice.discount * selectPrice.value) /
-                                  100 +
-                                (15 * selectPrice.value) / 100
-                            )
-                          : "-"}{" "}
-                        ر.ع
+                        {selectPrice ? formatPrice(selectPrice.value) : "-"} ر.ع
                       </TableCell>
                     </TableRow>
                   </TableBody>

@@ -14,26 +14,6 @@ export const RenewOrder_Mutation = gql`
         status
         updatedAt
         domainName
-        timeLine {
-          id
-          type
-          createdAt
-          status
-          price
-          duration
-          renewalDate
-          plan {
-            id
-            name
-          }
-          pricePlan {
-            id
-            key
-            value
-            discount
-            duration
-          }
-        }
         updated
         product {
           name
@@ -53,6 +33,7 @@ export const RenewOrder_Mutation = gql`
               id
               key
               value
+              link
             }
           }
         }
@@ -66,6 +47,7 @@ export const RenewOrder_Mutation = gql`
             key
             value
             discount
+            link
           }
         }
         price
@@ -75,6 +57,7 @@ export const RenewOrder_Mutation = gql`
           id
           key
           value
+          link
         }
         user {
           email

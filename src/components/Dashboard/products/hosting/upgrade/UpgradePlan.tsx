@@ -64,6 +64,7 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
               descriptionClassName: "!text-muted-foreground",
             });
             onEdit(data);
+            window.location.replace(data.pricePlans.link);
             onOpen(false);
           }
         },
@@ -291,13 +292,7 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                             </TableCell>
                             <TableCell className="text-end text-secondary-1 w-1/2">
                               {selectPrice
-                                ? formatPrice(
-                                    selectPrice.value -
-                                      (selectPrice.discount *
-                                        selectPrice.value) /
-                                        100 +
-                                      (15 * selectPrice.value) / 100
-                                  )
+                                ? formatPrice(selectPrice.value)
                                 : "-"}{" "}
                               ر.ع
                             </TableCell>

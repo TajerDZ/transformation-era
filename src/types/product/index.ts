@@ -24,6 +24,7 @@ export type ProductGraphql = {
       id: string;
       key: string;
       value: number;
+      link: string;
     }[];
   }[];
 };

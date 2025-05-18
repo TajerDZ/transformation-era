@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { t } from "i18next";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 function CardItem({
   item,
 }: {
@@ -8,6 +9,7 @@ function CardItem({
     title: string;
     icon: string;
     count: number;
+    to: string;
   };
 }) {
   return (
@@ -20,8 +22,11 @@ function CardItem({
           <h1 className="text-white font-bold text-lg ml-2">{t(item.title)}</h1>
         </div>
         <h1 className="text-white font-bold text-2xl">{item.count}</h1>
-        <Button className="bg-white text-secondary-2 font-semibold rounded-full px-10 py-2 hover:bg-secondary-2 hover:text-white transition duration-300 ease-in-out">
-          {t("details")}
+        <Button
+          asChild
+          className="bg-white text-secondary-2 font-semibold rounded-full px-10 py-2 hover:bg-secondary-2 hover:text-white transition duration-300 ease-in-out"
+        >
+          <Link to={item.to}>{t("details")}</Link>
         </Button>
       </div>
     </Card>

@@ -63,6 +63,7 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
               descriptionClassName: "!text-muted-foreground",
             });
             onEdit(data);
+            window.location.replace(data.pricePlans.link);
             onOpen(false);
           }
         },
@@ -218,16 +219,7 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                         {t("products.dialog.renewal.total")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {selectPrice
-                          ? formatPrice(
-                              selectPrice.value -
-                                ((selectPrice.discount || 0) *
-                                  selectPrice.value) /
-                                  100 +
-                                (15 * selectPrice.value) / 100
-                            )
-                          : "-"}{" "}
-                        ر.ع
+                        {selectPrice ? formatPrice(selectPrice.value) : "-"} ر.ع
                       </TableCell>
                     </TableRow>
                   </TableBody>

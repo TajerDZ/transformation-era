@@ -83,6 +83,16 @@ function Main() {
       prev.map((item) => (item.id === data.id ? data : item))
     );
   };
+  const isMoreThanOneMonthAway = (dueDate: string | number | Date) => {
+    const currentDate = new Date();
+    const dueDateObj = new Date(dueDate);
+
+    // Calculate the difference in months between current date and due date
+    const diffInTime = dueDateObj.getTime() - currentDate.getTime();
+    const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert time difference to days
+
+    return diffInDays >= 30; // Check if it's more than 30 days (approx. 1 month)
+  };
 
   const context = useContext(SideBarContext);
   if (!context) {
@@ -206,12 +216,14 @@ function Main() {
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {!item.updated && item.status != "pending" ? (
                         <div className="flex items-center justify-center gap-2">
-                          <Button
-                            className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
-                            onClick={() => handleRenewal(item)}
-                          >
-                            {t("products.table.renewal")}
-                          </Button>
+                          {!isMoreThanOneMonthAway(item.renewalDate) && (
+                            <Button
+                              className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
+                              onClick={() => handleRenewal(item)}
+                            >
+                              {t("products.table.renewal")}
+                            </Button>
+                          )}
                           <Button
                             className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1"
                             onClick={() => handleUpgrade(item)}
@@ -359,12 +371,14 @@ function Main() {
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {!item.updated && item.status != "pending" ? (
                         <div className="flex items-center justify-center gap-2">
-                          <Button
-                            className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
-                            onClick={() => handleRenewal(item)}
-                          >
-                            {t("products.table.renewal")}
-                          </Button>
+                          {!isMoreThanOneMonthAway(item.renewalDate) && (
+                            <Button
+                              className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
+                              onClick={() => handleRenewal(item)}
+                            >
+                              {t("products.table.renewal")}
+                            </Button>
+                          )}
                           <Button
                             className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1"
                             onClick={() => handleUpgrade(item)}
@@ -485,12 +499,14 @@ function Main() {
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {!item.updated && item.status != "pending" ? (
                         <div className="flex items-center justify-center gap-2">
-                          <Button
-                            className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
-                            onClick={() => handleRenewal(item)}
-                          >
-                            {t("products.table.renewal")}
-                          </Button>
+                          {!isMoreThanOneMonthAway(item.renewalDate) && (
+                            <Button
+                              className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
+                              onClick={() => handleRenewal(item)}
+                            >
+                              {t("products.table.renewal")}
+                            </Button>
+                          )}
                           <Button
                             className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1"
                             onClick={() => handleUpgrade(item)}

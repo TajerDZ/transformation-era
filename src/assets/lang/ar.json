@@ -103,7 +103,8 @@
     },
     "services_and_products": "الخدمات والمنتجات",
     "domains": "النطاقات",
-    "bills": "الفواتير"
+    "bills": "الفواتير",
+    "hostings": "الاستضافات"
   },
   "products": {
     "title": "المنتجات",
@@ -181,6 +182,7 @@
     },
     "dashboard": {
       "title": "لوحة التحكم",
+      "management": "إدارة",
       "description": "إدارة المنتجات والخدمات الخاصة بك.",
       "renewal": "التجديد",
       "promotion": "ترقية",

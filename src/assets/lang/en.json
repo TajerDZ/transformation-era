@@ -181,6 +181,7 @@
     },
     "dashboard": {
       "title": "Dashboard",
+      "management": "Management",
       "description": "Manage your products and services.",
       "renewal": "Renewal",
       "promotion": "Upgrade",

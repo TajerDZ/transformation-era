@@ -18,6 +18,7 @@ export type OrderGraphql = {
     value: number;
     discount: number;
     duration: number;
+    link: string;
   };
   plan: ProductGraphql["plans"][0];
   renewalDate: string;

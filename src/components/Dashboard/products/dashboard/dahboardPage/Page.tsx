@@ -7,10 +7,14 @@ import { useContext } from "react";
 import Domains from "@/assets/icons/domains.png";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import Icon from "@/components/ui/Icon";
+import { Button } from "@/components/ui/button";
+import { useLazyQuery } from "@apollo/client";
+import { CpanelUrl_QUERY } from "@/graphql/queries/CpanelUrl";
 type PageProps = {
   item: any;
 };
 function Page({ item }: PageProps) {
+  const [getLink, loading] = useLazyQuery(CpanelUrl_QUERY);
   const context = useContext(SideBarContext);
   if (!context) {
     throw new Error("useSideBarContext must be used within a SideBarProvider");
@@ -49,6 +53,22 @@ function Page({ item }: PageProps) {
                   <p className="text-sm text-gray-500">https://{item.domain}</p>
                 </div>
               </div>
+              <Button
+                className="bg-button"
+                onClick={() => {
+                  getLink({
+                    variables: {
+                      userName: item.user,
+                    },
+                    onCompleted: ({ cpanelUrl }) => {
+                      window.open(cpanelUrl, "_blank");
+                    },
+                  });
+                }}
+              >
+                {t("products.dashboard.management")}
+                {loading && <span className="ml-2 animate-spin">⏳</span>}
+              </Button>
             </div>
           </Card>
           <div className="flex items-start gap-5 max-lg:flex-col pb-5">
