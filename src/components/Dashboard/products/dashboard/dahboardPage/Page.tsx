@@ -14,7 +14,7 @@ type PageProps = {
   item: any;
 };
 function Page({ item }: PageProps) {
-  const [getLink, loading] = useLazyQuery(CpanelUrl_QUERY);
+  const [getLink, { loading }] = useLazyQuery(CpanelUrl_QUERY);
   const context = useContext(SideBarContext);
   if (!context) {
     throw new Error("useSideBarContext must be used within a SideBarProvider");
