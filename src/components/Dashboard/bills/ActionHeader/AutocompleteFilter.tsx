@@ -7,45 +7,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { AllProduct_QUERY } from "@/graphql/queries/products/AllProduct";
-import { ProductGraphql } from "@/types/product";
-import { useLazyQuery } from "@apollo/client";
-import { dir, t } from "i18next";
+
+import { t } from "i18next";
 import { useEffect, useState } from "react";
 type Props = {
   setFilter: React.Dispatch<React.SetStateAction<any[]>>;
 };
 function AutocompleteFilter({ setFilter }: Props) {
   const [search, setSearch] = useState<string>();
-  const [product, setProduct] = useState<string | null>(null);
   const [price, setPrice] = useState<string | null>(null);
-  const [products, setProducts] = useState<ProductGraphql[]>([]);
-  const [fetchProducts, { loading: loadingProduct }] = useLazyQuery(
-    AllProduct_QUERY,
-
-    {
-      fetchPolicy: "network-only",
-      onCompleted: ({ allProduct: { data } }) => {
-        setProducts(data);
-      },
-    }
-  );
 
   useEffect(() => {
     const filter = [
       ...(price
         ? [{ field: "totalPrice", operator: "$eq", value: price }]
         : []),
-      ...(product
-        ? [{ field: "idProduct", operator: "$eq", value: product }]
-        : []),
+
       ...(search
         ? [{ field: "numberInvoice", operator: "$eq", value: search }]
         : []),
@@ -53,7 +30,7 @@ function AutocompleteFilter({ setFilter }: Props) {
     if (filter) {
       setFilter(filter);
     }
-  }, [product, price, search]);
+  }, [price, search]);
   return (
     <div className="flex items-center gap-2 max-sm:flex-col max-sm:items-start">
       <div>
@@ -71,40 +48,6 @@ function AutocompleteFilter({ setFilter }: Props) {
             <div className="space-y-4">
               <h1 className="font-bold">{t("bills.filter_results")}</h1>
               <div className="space-y-4 ">
-                <div className="space-y-2 col-span-2">
-                  <Label>{t("bills.table.service")}</Label>
-                  <Select
-                    dir={dir()}
-                    value={product || ""}
-                    onValueChange={(value) => {
-                      setProduct(value);
-                    }}
-                    onOpenChange={(open) => {
-                      if (open) {
-                        fetchProducts();
-                      }
-                    }}
-                  >
-                    <SelectTrigger className="bg-input w-full border- !py-5">
-                      <SelectValue
-                        placeholder={t("bills.service_placeholder")}
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {products.length > 0 ? (
-                        products.map((item) => (
-                          <SelectItem key={item.id} value={item.id}>
-                            {item.name}
-                          </SelectItem>
-                        ))
-                      ) : loadingProduct ? (
-                        <SelectItem key="loading" value="0" disabled>
-                          {t("loading...")}
-                        </SelectItem>
-                      ) : null}
-                    </SelectContent>
-                  </Select>
-                </div>
                 <div className="space-y-2">
                   <Label>{t("bills.table.bill_amount")}</Label>
                   <Input
@@ -122,7 +65,6 @@ function AutocompleteFilter({ setFilter }: Props) {
                     variant="outline"
                     className="text-primary-2 border-primary-2 rounded-full w-full"
                     onClick={() => {
-                      setProduct(null);
                       setPrice(null);
                       setFilter([]);
                     }}

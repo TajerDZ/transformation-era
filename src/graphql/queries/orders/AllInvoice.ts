@@ -12,24 +12,18 @@ export const AllInvoice_QUERY = gql`
       pagination: $pagination
     ) {
       data {
-        type
-        price
-        duration
-        totalDiscount
-        totalPrice
-        subTotalPrice
-        tva
-        dueDate
-        status
-        numberInvoice
-        createdAt
         id
-        order {
+        numberInvoice
+        totalPrice
+        file
+        date
+        user {
+          lastname
           id
-          product {
-            name
-          }
+          firstname
         }
+        createdAt
+        updatedAt
       }
       total
     }

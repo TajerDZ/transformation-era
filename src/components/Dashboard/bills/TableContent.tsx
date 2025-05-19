@@ -62,12 +62,7 @@ function TableContent({
             <TableHead className="text-muted-foreground text-center">
               {t("bills.table.bill_date")}
             </TableHead>
-            <TableHead className="text-muted-foreground text-center">
-              {t("bills.table.service")}
-            </TableHead>
-            <TableHead className="text-muted-foreground text-center">
-              {t("bills.table.due_date")}
-            </TableHead>
+
             <TableHead className="text-muted-foreground text-center">
               {t("bills.table.bill_amount")}
             </TableHead>
@@ -81,13 +76,7 @@ function TableContent({
                     # {item.numberInvoice}
                   </TableCell>
                   <TableCell className="text-center">
-                    {format(item.createdAt, "dd-MM-yyyy")}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {item?.order?.product?.name}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {item.dueDate ? format(item.dueDate, "dd-MM-yyyy") : "-"}
+                    {item.date ? format(item.date, "dd-MM-yyyy") : "-"}
                   </TableCell>
                   <TableCell className="text-center">
                     {item.totalPrice} ريال

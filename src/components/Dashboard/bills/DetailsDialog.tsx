@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
   Dialog,
@@ -11,6 +12,7 @@ import Icon from "@/components/ui/Icon";
 
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { InvoiceGraphql } from "@/types/orders";
+import { formatPrice } from "@/utils/formatters";
 import { format } from "date-fns";
 import { t } from "i18next";
 
@@ -20,6 +22,15 @@ type PropsDialog = {
   onOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 function DetailsDialog({ isOpen, onOpen, item }: PropsDialog) {
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = item.file;
+    link.target = "_blank";
+    link.setAttribute("download", "my-document.pdf"); // optional filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <Dialog
       open={isOpen}
@@ -42,7 +53,18 @@ function DetailsDialog({ isOpen, onOpen, item }: PropsDialog) {
             </p>
           </DialogTitle>
           <DialogDescription>
-            {t("products.dialog.renewal.description")}
+            <div className="flex items-center gap-2 justify-between">
+              <span>{t("products.dialog.renewal.description")}</span>
+              {item.file && (
+                <Button
+                  className="bg-button rounded-full"
+                  onClick={handleDownload}
+                >
+                  <Icon name="Download" size={16} className="me-2" />
+                  {t("bills.details.save_bill")}
+                </Button>
+              )}
+            </div>
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
@@ -53,27 +75,18 @@ function DetailsDialog({ isOpen, onOpen, item }: PropsDialog) {
                   <TableBody>
                     <TableRow>
                       <TableCell className="text-start text-secondary-1">
-                        {t("bills.details.service")}
+                        {t("bills.table.bill_number")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1">
-                        {item?.order?.product?.name}
+                        {item.numberInvoice}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell className="text-start text-secondary-1">
-                        {t("bills.details.period")}
+                        {t("bills.table.bill_date")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1">
-                        {item.createdAt && format(item.createdAt, "dd-MM-yyyy")}{" "}
-                        - {item.dueDate && format(item.dueDate, "dd-MM-yyyy")}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="text-start text-secondary-1">
-                        {t("bills.details.value")}
-                      </TableCell>
-                      <TableCell className="text-end text-secondary-1">
-                        {item?.subTotalPrice} ريال
+                        {item.date ? format(item.date, "dd-MM-yyyy") : "-"}
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -90,7 +103,10 @@ function DetailsDialog({ isOpen, onOpen, item }: PropsDialog) {
                         {t("bills.details.subtotal")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {item.subTotalPrice} ريال
+                        {formatPrice(
+                          item.totalPrice - (15 * item.totalPrice) / 100
+                        )}{" "}
+                        ريال
                       </TableCell>
                     </TableRow>
 
@@ -99,7 +115,7 @@ function DetailsDialog({ isOpen, onOpen, item }: PropsDialog) {
                         {t("bills.details.tax")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {item.tva} ريال
+                        {formatPrice((15 * item.totalPrice) / 100)} ريال
                       </TableCell>
                     </TableRow>
                     <TableRow className="border-b-0">
@@ -107,7 +123,7 @@ function DetailsDialog({ isOpen, onOpen, item }: PropsDialog) {
                         {t("bills.details.total")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {item.totalPrice} ريال
+                        {formatPrice(item.totalPrice)} ريال
                       </TableCell>
                     </TableRow>
                   </TableBody>

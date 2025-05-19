@@ -187,7 +187,7 @@ function RenewalDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                         {t("products.dialog.renewal.subtotal")}
                       </TableCell>
                       <TableCell className="text-end text-secondary-1 w-1/2">
-                        {selectPrice ? formatPrice(selectPrice.value) : "-"} ر.ع
+                        {selectPrice ? formatPrice(selectPrice.value - (15 * selectPrice.value) / 100) : "-"} ر.ع
                       </TableCell>
                     </TableRow>
                     <TableRow className="border-b-0">

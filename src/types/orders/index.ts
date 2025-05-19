@@ -57,22 +57,12 @@ export type OrderInput = {
 };
 
 export type InvoiceGraphql = {
-  type: string;
-  price: number;
-  duration: number;
-  totalDiscount: number;
-  totalPrice: number;
-  subTotalPrice: number;
-  tva: number;
-  dueDate: string;
-  status: string;
-  numberInvoice: string;
-  createdAt: string;
   id: string;
-  order: {
-    id: string;
-    product: {
-      name: string;
-    };
-  };
+  numberInvoice: string;
+  date: string;
+  file: string;
+  totalPrice: number;
+  user: UserGraphql;
+  createdAt: string;
+  updatedAt: string;
 };

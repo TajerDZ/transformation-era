@@ -256,7 +256,10 @@ function UpgradePlanDialog({ isOpen, onOpen, item, onEdit }: PropsDialog) {
                             </TableCell>
                             <TableCell className="text-end text-secondary-1 w-1/2">
                               {selectPrice
-                                ? formatPrice(selectPrice.value)
+                                ? formatPrice(
+                                    selectPrice.value -
+                                      (15 * selectPrice.value) / 100
+                                  )
                                 : "-"}{" "}
                               ر.ع
                             </TableCell>
