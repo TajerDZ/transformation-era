@@ -42,7 +42,7 @@ function Main() {
         />
       </div>
       {items.length > 0 ? (
-        <div className="grid grid-cols-3 max-sm:grid-cols-1 max-md:grid-cols-2 gap-4 ">
+        <div className="grid grid-cols-4 max-lg:grid-cols-3 max-sm:grid-cols-1 max-md:grid-cols-2 gap-4 ">
           {items.map((item) => (
             <Card
               className="shadow-none rounded-lg p-2 max-md:p-2"
