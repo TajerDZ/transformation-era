@@ -59,7 +59,7 @@ function Page() {
         />
       </div>
       {(item?.plans ?? []).length > 0 ? (
-        <div className="grid grid-cols-2 gap-10 max-md:grid-cols-1 max-lg:gap-5">
+        <div className="grid grid-cols-3 gap-10 max-md:grid-cols-1 max-lg:gap-5">
           {item?.plans.map((plan) => (
             <Card
               className="shadow-none rounded-2xl p-4 max-md:p-4 bg-[#F2F3FF]"

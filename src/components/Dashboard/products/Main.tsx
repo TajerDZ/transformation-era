@@ -371,20 +371,22 @@ function Main() {
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {!item.updated && item.status != "pending" ? (
                         <div className="flex items-center justify-center gap-2">
-                          {!isMoreThanOneMonthAway(item.renewalDate) && (
+                          {!isMoreThanOneMonthAway(item.renewalDate) ? (
                             <Button
                               className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
                               onClick={() => handleRenewal(item)}
                             >
                               {t("products.table.renewal")}
                             </Button>
+                          ) : (
+                            <span>-</span>
                           )}
-                          <Button
+                          {/* <Button
                             className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1"
                             onClick={() => handleUpgrade(item)}
                           >
                             {t("products.table.promotion")}
-                          </Button>
+                          </Button> */}
                         </div>
                       ) : (
                         <span>{t("products.table.renewed")}</span>
@@ -499,20 +501,22 @@ function Main() {
                     <TableCell className="text-center text-secondary-1 font-medium">
                       {!item.updated && item.status != "pending" ? (
                         <div className="flex items-center justify-center gap-2">
-                          {!isMoreThanOneMonthAway(item.renewalDate) && (
+                          {!isMoreThanOneMonthAway(item.renewalDate) ? (
                             <Button
                               className="w-24 bg-primary-1 text-white rounded-full hover:bg-secondary-5"
                               onClick={() => handleRenewal(item)}
                             >
                               {t("products.table.renewal")}
                             </Button>
+                          ) : (
+                            <span>-</span>
                           )}
-                          <Button
+                          {/* <Button
                             className="w-24 bg-secondary-2 text-white rounded-full hover:bg-secondary-1"
                             onClick={() => handleUpgrade(item)}
                           >
                             {t("products.table.promotion")}
-                          </Button>
+                          </Button> */}
                         </div>
                       ) : (
                         <span>{t("products.table.renewed")}</span>
